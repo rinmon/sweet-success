@@ -1,0 +1,59 @@
+/* バージョン表示のスタイル */
+#game-version {
+    display: inline-block;
+    font-size: 0.9em;
+    background-color: #8b5a2b;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 0 5px;
+}
+
+#game-version:hover {
+    background-color: #a67c52;
+    transform: scale(1.05);
+}
+
+/* 更新履歴のスタイル */
+.changelog-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Nunito', 'M PLUS Rounded 1c', sans-serif;
+}
+
+.changelog-entry {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #ccc;
+}
+
+.changelog-entry:last-child {
+    border-bottom: none;
+}
+
+.changelog-entry h3 {
+    color: #8b5a2b;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.changelog-date {
+    font-size: 0.8em;
+    color: #888;
+    font-weight: normal;
+}
+
+.changelog-entry ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.changelog-entry li {
+    margin-bottom: 5px;
+    color: #333;
+}
