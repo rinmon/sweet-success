@@ -68,25 +68,25 @@
 /* モバイルナビゲーションメニュー */
 .mobile-nav {
     display: block;
-    visibility: hidden;
     position: fixed;
     top: 0;
-    right: -300px; /* 初期位置は画面外、広めに設定 */
+    right: 0;
     width: 250px;
     height: 100%;
-    background-color: #ffffff;
-    z-index: 10001; /* 最上位の高い値に設定 */
+    background: #fff;
+    z-index: 10001;
     box-shadow: -5px 0 15px rgba(0,0,0,0.2);
-    transition: right 0.3s ease-in-out, visibility 0.3s ease-in-out;
     overflow-y: auto;
     padding-top: 60px;
     padding-bottom: 20px;
-}
-
-.mobile-nav.active {
-    right: 0; /* メニュー表示時 */
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
     visibility: visible;
 }
+.mobile-nav.active {
+    transform: translateX(0);
+}
+
 
 /* モバイルメニュー項目 */
 .mobile-nav-item {
