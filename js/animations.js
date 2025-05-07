@@ -31,15 +31,27 @@ function showAnimation(type, amount) {
     
     // 金額表示（購入時）
     if (type === 'cash-register' && amount) {
+        // レジのディスプレイに金額を表示
+        const registerDisplay = sprite.querySelector('.register-display');
+        if (registerDisplay) {
+            registerDisplay.textContent = `¥${formatNumber(amount)}`;
+            registerDisplay.style.color = '#c62828';
+        }
+        
+        // 金額ラベルを上に表示
         const costLabel = document.createElement('div');
-        costLabel.textContent = `-${formatNumber(amount)}`;
+        costLabel.textContent = `-¥${formatNumber(amount)}`;
         costLabel.style.position = 'absolute';
-        costLabel.style.top = '-20px';
-        costLabel.style.left = '15px';
+        costLabel.style.top = '-30px';
+        costLabel.style.left = '50%';
+        costLabel.style.transform = 'translateX(-50%)';
         costLabel.style.color = '#c62828';
         costLabel.style.fontWeight = 'bold';
         costLabel.style.fontSize = '1.2em';
         costLabel.style.textShadow = '0 0 3px white';
+        costLabel.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+        costLabel.style.padding = '2px 8px';
+        costLabel.style.borderRadius = '10px';
         
         sprite.appendChild(costLabel);
         

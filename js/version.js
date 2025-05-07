@@ -10,7 +10,7 @@
 const gameVersion = {
     major: 1,
     minor: 0,
-    patch: 1,
+    patch: 2,
     date: '2025-05-07',
     
     // バージョン文字列を取得
@@ -25,6 +25,17 @@ const gameVersion = {
     
     // 変更履歴
     changelog: [
+        {
+            version: "1.0.2",
+            date: "2025-05-07",
+            changes: [
+                "管理者パネル機能の追加",
+                "ゲームバランスの調整機能追加",
+                "年マークと金額表示の改善",
+                "game_spec.mdの整合性を改善",
+                "READMEのタイトルを修正"
+            ]
+        },
         {
             version: "1.0.1",
             date: "2025-05-07",
