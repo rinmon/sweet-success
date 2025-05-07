@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="80px" height="80px" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <title>Grandma</title>
+    <g id="Grandma" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <!-- Hair -->
+        <path d="M15,28 C15,15 30,5 50,10 C60,12 65,24 65,30 C65,35 60,38 60,38 L20,38 C20,38 15,35 15,28 Z" id="Hair" fill="#E0E0E0"></path>
+        
+        <!-- Face -->
+        <circle id="Face" fill="#FFE0BD" cx="40" cy="40" r="22"></circle>
+        
+        <!-- Glasses -->
+        <ellipse id="Glass-Left" stroke="#666666" stroke-width="1.5" cx="32" cy="35" rx="7" ry="6"></ellipse>
+        <ellipse id="Glass-Right" stroke="#666666" stroke-width="1.5" cx="48" cy="35" rx="7" ry="6"></ellipse>
+        <path d="M39,35 L41,35" id="Bridge" stroke="#666666" stroke-width="1.5"></path>
+        <path d="M25,35 L20,32" id="Arm-Left" stroke="#666666" stroke-width="1.5"></path>
+        <path d="M55,35 L60,32" id="Arm-Right" stroke="#666666" stroke-width="1.5"></path>
+        
+        <!-- Eyes -->
+        <ellipse id="Eye-Left" fill="#333333" cx="32" cy="35" rx="2" ry="1"></ellipse>
+        <ellipse id="Eye-Right" fill="#333333" cx="48" cy="35" rx="2" ry="1"></ellipse>
+        
+        <!-- Mouth -->
+        <path d="M35,48 C38,50 42,50 45,48" id="Smile" stroke="#333333" stroke-width="1.5" stroke-linecap="round"></path>
+        
+        <!-- Cheeks -->
+        <circle id="Cheek-Left" fill="#FFB6C1" opacity="0.4" cx="30" cy="42" r="4"></circle>
+        <circle id="Cheek-Right" fill="#FFB6C1" opacity="0.4" cx="50" cy="42" r="4"></circle>
+        
+        <!-- Body/Apron -->
+        <rect id="Body" fill="#F5A9B8" x="25" y="60" width="30" height="15" rx="4"></rect>
+        <path d="M25,60 L25,70 L55,70 L55,60 Z" id="Apron-Top" fill="#FFFFFF"></path>
+        <path d="M38,60 L42,60 L42,70 L38,70 Z" id="Apron-Center" fill="#F5A9B8"></path>
+        
+        <!-- Cookie (in hand) -->
+        <circle id="Cookie" fill="#D9A648" cx="60" cy="65" r="8"></circle>
+        <circle id="Chip1" fill="#432616" cx="58" cy="63" r="2"></circle>
+        <circle id="Chip2" fill="#432616" cx="62" cy="67" r="1.5"></circle>
+    </g>
+</svg>

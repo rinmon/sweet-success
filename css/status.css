@@ -1,0 +1,254 @@
+/* status.css - 改善されたステータスログのスタイル */
+
+#status-log {
+    max-height: 300px;
+    overflow: hidden;
+    background-color: #f9e9d2;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(166, 124, 82, 0.25);
+    position: relative;
+    border: 2px solid #cd853f;
+    margin-top: 15px;
+}
+
+#status-log.expanded {
+    max-height: 500px;
+}
+
+#status-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 15px;
+    background-color: #cd853f;
+    color: white;
+    border-radius: 8px 8px 0 0;
+}
+
+#status-header h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.status-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.status-control-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.status-control-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#status-messages {
+    padding: 15px;
+    overflow-y: auto;
+    max-height: 250px;
+    transition: max-height 0.3s;
+    font-size: 15px;
+}
+
+#status-log.expanded #status-messages {
+    max-height: 420px; /* より大きく */
+}
+
+.status-message {
+    margin-bottom: 8px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 15px; /* フォントサイズを大きく */
+    animation: fadeIn 0.5s forwards;
+    position: relative;
+    padding-left: 26px;
+}
+
+.status-message.auto-fade {
+    animation: fadeInAndOut 5s forwards;
+}
+
+@keyframes fadeInAndOut {
+    0% { opacity: 0; transform: translateY(10px); }
+    10% { opacity: 1; transform: translateY(0); }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.status-message::before {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* メッセージタイプごとのスタイル */
+.status-message.success {
+    background-color: #e7f5e7;
+    color: #28a745;
+}
+
+.status-message.success::before {
+    content: "✓";
+}
+
+.status-message.info {
+    background-color: #e7f1f5;
+    color: #17a2b8;
+}
+
+.status-message.info::before {
+    content: "ℹ";
+}
+
+.status-message.error {
+    background-color: #f5e7e7;
+    color: #dc3545;
+}
+
+.status-message.error::before {
+    content: "✗";
+}
+
+.status-message.warning {
+    background-color: #f5f2e7;
+    color: #ffc107;
+}
+
+.status-message.warning::before {
+    content: "⚠";
+}
+
+.status-message.discovery {
+    background-color: #eee7f5;
+    color: #6f42c1;
+}
+
+.status-message.discovery::before {
+    content: "★";
+}
+
+.status-message.special {
+    background-color: #e7f5f2;
+    color: #20c997;
+}
+
+.status-message.special::before {
+    content: "✨";
+}
+
+.status-message.market {
+    background-color: #f5eae7;
+    color: #fd7e14;
+}
+
+.status-message.market::before {
+    content: "💰";
+}
+
+.status-message.event {
+    background-color: #f5e7f2;
+    color: #e83e8c;
+}
+
+.status-message.event::before {
+    content: "🎉";
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    #status-log {
+        max-height: 180px;
+    }
+    
+    #status-log.expanded {
+        max-height: 300px;
+    }
+    
+    #status-messages {
+        max-height: 130px;
+    }
+    
+    #status-log.expanded #status-messages {
+        max-height: 250px;
+    }
+    
+    .status-message {
+        padding: 6px 10px 6px 24px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 600px) {
+    #status-log {
+        max-height: 150px;
+    }
+    
+    #status-log.expanded {
+        max-height: 250px;
+    }
+    
+    #status-header {
+        padding: 6px 10px;
+    }
+    
+    #status-header h3 {
+        font-size: 14px;
+    }
+    
+    #status-messages {
+        max-height: 100px;
+        padding: 5px;
+    }
+    
+    #status-log.expanded #status-messages {
+        max-height: 200px;
+    }
+    
+    .status-message {
+        margin-bottom: 6px;
+        padding: 5px 8px 5px 22px;
+        font-size: 12px;
+        border-radius: 4px;
+    }
+    
+    .status-message::before {
+        left: 6px;
+    }
+    
+    .status-control-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
+    }
+}
+
+/* オートスクロール無効時の表示 */
+#status-log.auto-scroll-disabled::after {
+    content: "自動スクロール停止中";
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    font-size: 11px;
+    color: #666;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 3px 6px;
+    border-radius: 4px;
+}

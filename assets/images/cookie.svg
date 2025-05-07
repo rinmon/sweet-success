@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="200px" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <title>Cookie</title>
+    <g id="Cookie" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="Base" fill="#C68E17" cx="100" cy="100" r="95"></circle>
+        <circle id="Inner" fill="#915E0A" cx="100" cy="100" r="85"></circle>
+        <circle id="Cookie-Base" fill="#D9A648" cx="100" cy="100" r="90"></circle>
+        
+        <!-- Chocolate Chips -->
+        <circle id="Chip1" fill="#432616" cx="65" cy="58" r="10"></circle>
+        <circle id="Chip2" fill="#432616" cx="130" cy="70" r="12"></circle>
+        <circle id="Chip3" fill="#432616" cx="85" cy="125" r="11"></circle>
+        <circle id="Chip4" fill="#432616" cx="40" cy="110" r="9"></circle>
+        <circle id="Chip5" fill="#432616" cx="145" cy="120" r="10"></circle>
+        <circle id="Chip6" fill="#432616" cx="110" cy="45" r="8"></circle>
+        <circle id="Chip7" fill="#432616" cx="50" cy="150" r="7"></circle>
+        <circle id="Chip8" fill="#432616" cx="160" cy="90" r="6"></circle>
+        <circle id="Chip9" fill="#432616" cx="125" cy="155" r="9"></circle>
+        
+        <!-- Cookie Texture -->
+        <path d="M30,90 C40,85 45,95 55,97" id="Crack1" stroke="#B67915" stroke-width="2"></path>
+        <path d="M80,30 C90,35 100,25 110,30" id="Crack2" stroke="#B67915" stroke-width="2"></path>
+        <path d="M140,50 C145,60 155,55 160,65" id="Crack3" stroke="#B67915" stroke-width="2"></path>
+        <path d="M120,170 C130,165 135,160 145,165" id="Crack4" stroke="#B67915" stroke-width="2"></path>
+        <path d="M40,150 C45,160 55,155 60,165" id="Crack5" stroke="#B67915" stroke-width="2"></path>
+    </g>
+</svg>

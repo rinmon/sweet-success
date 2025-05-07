@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Success</title>
+    <!-- CSSファイル -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/characters.css">
+    <link rel="stylesheet" href="css/recipes.css">
+    <link rel="stylesheet" href="css/market.css">
+    <link rel="stylesheet" href="css/status.css">
+    <link rel="stylesheet" href="css/units.css">
+    <link rel="stylesheet" href="css/mystery-ingredients.css">
+    <link rel="stylesheet" href="css/player.css">
+    <link rel="stylesheet" href="css/stats.css">
+    <link rel="stylesheet" href="css/orders.css">
+    <link rel="stylesheet" href="css/inventory.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sweet Success <button id="help-button" class="help-btn" title="遊び方を見る">?</button></h1>
+            <div id="player-info">
+                <div id="player-name-container">
+                    <span id="player-name">プレイヤー</span>
+                    <button id="change-name-btn" title="名前を変更">✏️</button>
+                </div>
+                <div id="player-stats">
+                    <span id="player-level">レベル: 1</span>
+                    <span id="login-streak">1日連続ログイン</span>
+                </div>
+                <div id="game-time-container">
+                    <span id="game-time">1年 1月 1日(月) 08:00</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section id="game-area">
+                <div id="cookie-display">
+                    <p>クッキー: <span id="cookie-count">0</span></p>
+                    <p>毎秒クッキー生産量 (CPS): <span id="cps-count">0</span></p>
+                </div>
+                <div id="big-cookie">
+                    <button id="big-cookie-btn" class="clickable">
+                        <img src="assets/images/cookie.svg" alt="Cookie" width="200" height="200">
+                    </button>
+                </div>
+                <div id="cookie-particles" class="particles-container"></div>
+                <p>クッキーをクリックして作ろう！</p>
+                
+                <div id="status-log">
+                    <div id="status-header">
+                        <h3>ステータスログ</h3>
+                        <div class="status-controls">
+                            <button id="toggle-autoscroll" class="status-control-btn" title="自動スクロール切替">▶</button>
+                            <button id="expand-status" class="status-control-btn" title="拡大/縮小">□</button>
+                            <button id="clear-status" class="status-control-btn" title="クリア">×</button>
+                        </div>
+                    </div>
+                    <div id="status-messages"></div>
+                </div>
+            </section>
+
+            <section id="store-area">
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" data-tab="units-tab">ユニット</button>
+                        <button class="tab-button" data-tab="upgrades-tab">アップグレード</button>
+                        <button class="tab-button" data-tab="recipes-tab">レシピ</button>
+                        <button class="tab-button" data-tab="market-tab">マーケット</button>
+                        <button class="tab-button" data-tab="stats-tab">統計</button>
+                        <button class="tab-button" data-tab="orders-tab">注文</button>
+                    </div>
+                    
+                    <div id="units-tab" class="tab-content active">
+                        <div id="units-section">
+                            <h2>自動生産ユニット</h2>
+                            <div id="units-container">
+                                <!-- JavaScriptでユニットがここに追加されます -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="upgrades-tab" class="tab-content">
+                        <div id="upgrades-section">
+                            <h2>アップグレード</h2>
+                            <div id="upgrades-container">
+                                <!-- JavaScriptでアップグレードがここに追加されます -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="recipes-tab" class="tab-content">
+                        <div id="ingredients-section">
+                            <h2>材料 <span class="tooltip">クッキーで材料を購入できます</span></h2>
+                            <div id="ingredients-container">
+                                <!-- JavaScriptで材料がここに追加されます -->
+                            </div>
+                        </div>
+        
+                        <div id="recipes-section">
+                            <h2>レシピ <span class="tooltip">特別なクッキーを作ります</span></h2>
+                            <div id="recipes-container">
+                                <!-- JavaScriptでレシピがここに追加されます -->
+                            </div>
+                        </div>
+                        
+                        <div id="inventory-section">
+                            <h2>クッキー在庫 <span class="tooltip">作ったクッキーの在庫を管理します</span></h2>
+                            <div id="cookie-inventory">
+                                <!-- JavaScriptで在庫がここに表示されます -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="market-tab" class="tab-content">
+                        <div id="market-section">
+                            <h2>クッキーマーケット <span class="tooltip">クッキーを売却してコインを獲得します</span></h2>
+                            
+                            <div class="market-info">
+                                <div class="market-price">
+                                    <span class="market-price-label">クッキー価格:</span> 
+                                    <span class="cookie-price" id="cookie-price">1.00</span>
+                                    <span id="market-trend" class="market-trend trend-neutral">→</span>
+                                </div>
+                                <div id="market-coins" class="market-coins">0</div>
+                            </div>
+                            
+                            <div class="chart-container">
+                                <div class="chart-label">価格推移</div>
+                                <div id="price-chart"></div>
+                            </div>
+                            
+                            <div class="market-actions">
+                                <div class="sell-actions">
+                                    <button class="sell-btn" onclick="sellCookies(10)">売却: 10クッキー</button>
+                                    <button class="sell-btn" onclick="sellCookies(100)">売却: 100クッキー</button>
+                                    <button class="sell-btn" onclick="sellCookies(1000)">売却: 1000クッキー</button>
+                                </div>
+                            </div>
+                            
+                            <h2>マーケットアイテム <span class="tooltip">コインで特別なアイテムを購入できます</span></h2>
+                            <div id="market-items">
+                                <!-- JavaScriptでマーケットアイテムがここに追加されます -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="stats-tab" class="tab-content">
+                        <div id="stats-section">
+                            <h2>統計情報 <span class="tooltip">クッキーの生産と販売状況</span></h2>
+                            
+                            <div class="stats-controls">
+                                <div class="time-range-selector">
+                                    <button id="daily-stats" class="stats-btn active">日別</button>
+                                    <button id="weekly-stats" class="stats-btn">週別</button>
+                                    <button id="monthly-stats" class="stats-btn">月別</button>
+                                </div>
+                                <div class="chart-type-selector">
+                                    <button id="production-chart-btn" class="stats-btn active">生産</button>
+                                    <button id="sales-chart-btn" class="stats-btn">販売</button>
+                                    <button id="inventory-chart-btn" class="stats-btn">在庫</button>
+                                </div>
+                            </div>
+                            
+                            <div class="charts-container">
+                                <div id="main-chart-container">
+                                    <canvas id="main-stats-chart"></canvas>
+                                </div>
+                                
+                                <div class="sub-charts">
+                                    <div class="sub-chart">
+                                        <h3>生産割合</h3>
+                                        <div class="chart-container small">
+                                            <canvas id="production-ratio-chart"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="sub-chart">
+                                        <h3>レシピ別人気度</h3>
+                                        <div class="chart-container small">
+                                            <canvas id="recipe-popularity-chart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="stats-summary">
+                                    <div class="stats-card">
+                                        <h4>総生産数</h4>
+                                        <p id="total-cookies-produced">0</p>
+                                    </div>
+                                    <div class="stats-card">
+                                        <h4>総販売数</h4>
+                                        <p id="total-cookies-sold">0</p>
+                                    </div>
+                                    <div class="stats-card">
+                                        <h4>総収益</h4>
+                                        <p id="total-revenue">0</p>
+                                    </div>
+                                    <div class="stats-card">
+                                        <h4>最高生産レシピ</h4>
+                                        <p id="top-produced-recipe">プレーンクッキー</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="orders-tab" class="tab-content">
+                        <div id="orders-section">
+                            <h2>クッキー注文 <span class="tooltip">お客様からの注文を処理しよう</span></h2>
+                            <div class="orders-info">
+                                <p>お客様からの注文を処理して、クッキーを売ろう！</p>
+                                <p>時間内に注文を完了させると報酬がもらえます。</p>
+                            </div>
+                            <div id="orders-container">
+                                <!-- 注文が表示されます -->
+                            </div>
+                            <div id="order-stats">
+                                <div class="order-stat">
+                                    <span class="stat-label">完了数:</span>
+                                    <span class="stat-value" id="completed-orders">0</span>
+                                </div>
+                                <div class="order-stat">
+                                    <span class="stat-label">総収入:</span>
+                                    <span class="stat-value" id="total-revenue">0</span>
+                                </div>
+                                <div class="order-stat">
+                                    <span class="stat-label">人気商品:</span>
+                                    <span class="stat-value" id="best-seller">なし</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- アニメーション領域 -->
+            <div id="animation-area">
+                <div id="cash-register" class="hidden">
+                    <div class="register-drawer"></div>
+                    <div class="register-display">¥</div>
+                </div>
+                <!-- パッケージアニメーションがここに表示されます -->
+            </div>
+            
+            <!-- 調理中の表示領域 -->
+            <div id="cooking-container" class="hidden">
+                <!-- 調理進行状況がここに表示されます -->
+            </div>
+        </main>
+
+        <footer>
+            <p>Sweet Success - <button id="save-game">セーブ</button> <button id="reset-game">リセット</button></p>
+        </footer>
+        
+        <!-- アニメーションを表示するエリア -->
+        <div id="animation-area">
+            <div id="baker" class="animation-sprite hidden">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHBhdGggZD0iTTMyIDJDMjUuNDEgMiAyMCA2LjQxIDIwIDEydjRjMCAzLjg3IDIuMjQgNy4yMyA1LjUgOC44OEwyNCAyNy41NmMtMyAzLTE1Ljc1IDE3LjY5LTE1Ljk0IDE3LjgxQzggNDUuNTYgOCA0NS43OCA4IDQ2djhjMCAxLjY1IDMuNTggNCAxMiA0IDcuNDQgMCAxMS41OS0xLjczIDExLjk3LTMuNTMuMDQtLjE1LjAzLS4zMS4wMy0uNDdoLjA5YzAgLjE0LS4wMS4yOC4wMy40MkMzMi40OCA1Ni4zIDM2LjYzIDU4IDQ0IDU4YzguNCAwIDEyLTIuMzUgMTItNFY0NmMwLS4yMiAwLS40NC0uMDYtLjYzQzU1Ljg3IDQ1LjI1IDQzIDMwLjQ0IDQwIDI3LjVsLTEuNS0yLjYyQzQxLjc2IDIzLjIzIDQ0IDE5Ljg3IDQ0IDE2di00YzAtNS41OS01LjQxLTEwLTEyLTEwem0wIDRjMy44NyAwIDggMi40MSA4IDZ2NGMwIDIuMjEtMS43OCA0LTQgNGgtOGMtMi4yIDAtNC0xLjc5LTQtNHYtNGMwLTMuNTkgNC4xMy02IDgtNnptMCAxNmg4bDMuMDMgNS4yOEM0NSAyOS42MSA1MSAzOS44NSA1MiA0MXY5YzAgLjQzLTIuMzMgMi0xMCAyLTcuNyAwLTkuOTYtMS41Ny05Ljk5LTJoLS4wMmMtLjAzLjQzLTIuMjkgMi0xMCAyczEwLTEuNTcgMTAtMnYtOWMxLS45OSA3LTExLjAxIDktMTMuNDRMMzIgMjJoLTh2LTQuMzFjMS4zOC40NCAyLjY0LjMxIDQgLjMxaDRjMS4zNiAwIDIuNjItLjI2IDQtLjY3VjIyeiIgZmlsbD0iIzhiNmM1OSIvPjwvc3ZnPg==" alt="パン屋さん">
+            </div>
+            <div id="cash-register" class="animation-sprite hidden">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHBhdGggZD0iTTU1Ljk5OCAwSDcuOTYzQzMuNTcgMCAwIDMuNTcgMCA3Ljk2M3Y0OC4wMzVDMCA2MC4zOTEgMy41NyA2NCA3Ljk2MyA2NGg0OC4wMzVDNjAuMzkxIDY0IDY0IDYwLjM5MSA2NCA1NS45OThWNy45NjNDNjQgMy41NyA2MC4zOTEgMCA1NS45OTggMHpNOCAzMnYtNmgxOHY2SDh6bTMwIDBoMTh2NkgzOHYtNnptMTgtMTJIMzh2LTZoMTh2NnptLTI0LTZoLTZ2NmgtNnYtNkg4di02aDE4djZ6bS02IDE4aDZ2NmgtNnYtNnptOCA2aDZ2LTZoMTJ2MTJIMzhWMzh6IiBmaWxsPSIjNDY0NjQ2Ii8+PC9zdmc+" alt="レジ">
+            </div>
+        </div>
+        
+        <!-- チュートリアルモーダル -->
+        <div id="tutorial-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Sweet Successの遊び方</h2>
+                
+                <div class="tutorial-section">
+                    <h3>1. クッキーをクリックして生産</h3>
+                    <p>大きなクッキーをクリックするとクッキーが増えます。クリックすればするほどクッキーが増えます。</p>
+                </div>
+                
+                <div class="tutorial-section">
+                    <h3>2. 自動生産ユニットを購入</h3>
+                    <p>右側の「自動生産ユニット」セクションからユニットを購入しましょう。ユニットは自動的にクッキーを生産します。</p>
+                    <ul>
+                        <li><strong>クリックヘルパー</strong>: 10クッキーで購入でき、自動でクッキーをクリックして毎秒 0.1 クッキーを生産</li>
+                        <li><strong>おばあちゃん</strong>: 100クッキーで購入でき、毎秒 1 クッキーを生産</li>
+                        <li><strong>工場</strong>: 1,000クッキーで購入でき、毎秒 10 クッキーを生産</li>
+                    </ul>
+                </div>
+                
+                <div class="tutorial-section">
+                    <h3>3. アップグレードを購入</h3>
+                    <p>一定の条件を満たすと、「アップグレード」セクションに新しいボタンが表示されます。アップグレードはクリックの効率やユニットの生産量を増やします。</p>
+                </div>
+                
+                <div class="tutorial-section">
+                    <h3>4. プレイヤーログインとレベルアップ</h3>
+                    <p>画面上部にプレイヤー情報が表示されます。名前を変更したり、レベルや連続ログイン日数を確認できます。</p>
+                    <ul>
+                        <li><strong>連続ログインボーナス</strong>: 毎日ログインするとボーナスが増え、特に7日間連続で大きなボーナスがもらえます</li>
+                        <li><strong>レベルアップ</strong>: クッキーを生産すると経験値がたまり、レベルが上がります</li>
+                        <li><strong>ゲーム内時間</strong>: 画面右上に表示されるゲーム内時間は週末セールなどの特別イベントに影響します</li>
+                    </ul>
+                </div>
+                
+                <div class="tutorial-section">
+                    <h3>5. 統計情報の確認</h3>
+                    <p>「統計」タブでは、生産したクッキーのデータをグラフで確認できます。</p>
+                    <ul>
+                        <li><strong>期間切り替え</strong>: 日別/週別/月別のボタンで期間を切り替えられます</li>
+                        <li><strong>データタイプ</strong>: 生産/販売/在庫のボタンで表示するデータを切り替えられます</li>
+                        <li><strong>サマリー情報</strong>: 番下には総生産数や総販売数などのサマリー情報が表示されます</li>
+                    </ul>
+                </div>
+                
+                <div class="tutorial-section">
+                    <h3>6. ゲーム内時間とイベント</h3>
+                    <p>ゲーム内時間は実際の時間とは異なり、自動的に進みます。時間によって特別なイベント（週末セールなど）が発生することがあります。</p>
+                </div>
+                
+                <div class="tutorial-section">
+                    <h3>7. 注文システム</h3>
+                    <p>「注文」タブでは、お客様からのクッキー注文を受けることができます。注文を完了すると報酬がもらえます。</p>
+                    <ul>
+                        <li><strong>注文処理</strong>: 制限時間内に注文を完了させましょう。時間切れになると注文はキャンセルされます。</li>
+                        <li><strong>特別注文</strong>: 金色の枠で表示される特別注文は報酬が2倍ですが、制限時間が短くなります。</li>
+                        <li><strong>時間帯</strong>: 昼間（11時〜14時）は注文が多く、夜間（22時〜6時）は注文が少なくなります。週末（土日）は特に注文が増えます。</li>
+                    </ul>
+                </div>
+                
+                <div class="tutorial-section">
+                    <h3>TIPS</h3>
+                    <ul>
+                        <li>毎日ログインして連続ログインボーナスを獲得しましょう</li>
+                        <li>レシピの生産効率を統計タブで分析しましょう</li>
+                        <li>レシピを組み合わせて効率よくクッキーを生産しましょう</li>
+                        <li>人気のあるクッキーを多く作っておくと注文に対応しやすくなります</li>
+                        <li>昼間と週末に注文が増えるので、その時間帯に合わせて在庫を準備しましょう</li>
+                    </ul>
+                </div>
+                
+                <button id="close-tutorial" class="close-btn">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 外部ライブラリ -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    
+    <!-- JavaScriptファイル -->
+    <script src="js/main.js"></script>
+    <script src="js/units.js"></script>
+    <script src="js/upgrades.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/ingredients.js"></script>
+    <script src="js/recipes.js"></script>
+    <script src="js/market.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/inventory.js"></script>
+    <script src="js/orders.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>

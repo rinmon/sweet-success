@@ -1,0 +1,117 @@
+/* アニメーション関連のCSS */
+
+/* クッキーのSVG */
+.cookie-svg {
+    width: 180px;
+    height: 180px;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 5px solid #d2691e; /* Chocolate color */
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    margin: 0 auto 10px;
+    box-shadow: 0 5px 15px rgba(139, 69, 19, 0.4);
+    background-color: transparent;
+    display: block;
+}
+
+.cookie-svg svg {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.cookie-svg:hover {
+    box-shadow: 0 5px 20px rgba(139, 69, 19, 0.6);
+}
+
+.cookie-svg:active {
+    transform: scale(0.92);
+    box-shadow: 0 2px 10px rgba(139, 69, 19, 0.4);
+}
+
+/* 粒子エフェクトのコンテナ */
+.particles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 個々の粒子 */
+.particle {
+    position: absolute;
+    background-color: #ffcc80;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+    opacity: 0.7;
+    z-index: 2;
+}
+
+/* アニメーションスプライト */
+#animation-area {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.animation-sprite {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    transition: all 0.5s ease;
+}
+
+.animation-sprite img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* キーフレームアニメーション */
+@keyframes rotateCookie {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.cookie-svg:hover svg {
+    animation: rotateCookie 30s linear infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes flipCookie {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(360deg); }
+}
+
+@keyframes pop {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.7; }
+}
+
+/* ユニットの購入時のアニメーション */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+.unit-item:hover .item-button, 
+.upgrade-item:hover .item-button {
+    animation: pulse 1s infinite;
+}

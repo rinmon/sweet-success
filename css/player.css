@@ -1,0 +1,202 @@
+/* プレイヤー情報とゲーム内時間のスタイル */
+
+#player-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 248, 220, 0.8);
+    border-radius: 10px;
+    padding: 8px 15px;
+    margin: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+}
+
+#player-name-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 15px;
+}
+
+#player-name {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #8B4513;
+}
+
+#change-name-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    padding: 2px 5px;
+}
+
+#change-name-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+#player-stats {
+    display: flex;
+    gap: 15px;
+    color: #654321;
+}
+
+#player-level {
+    position: relative;
+    font-weight: bold;
+    padding-left: 20px;
+}
+
+#player-level::before {
+    content: '🎖️';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#login-streak {
+    position: relative;
+    padding-left: 20px;
+}
+
+#login-streak::before {
+    content: '📅';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#game-time-container {
+    margin-left: auto;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.1);
+    color: #333;
+    font-family: monospace;
+    font-size: 0.9em;
+    position: relative;
+    padding-left: 25px;
+    min-width: 180px;
+    text-align: center;
+}
+
+#game-time-container::before {
+    content: '🕒';
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* レベルアップエフェクト */
+@keyframes levelUpGlow {
+    0% {
+        box-shadow: 0 0 5px 2px rgba(255, 215, 0, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 15px 5px rgba(255, 215, 0, 0.7);
+    }
+    100% {
+        box-shadow: 0 0 5px 2px rgba(255, 215, 0, 0.3);
+    }
+}
+
+.level-up {
+    animation: levelUpGlow 2s ease-in-out;
+}
+
+/* 連続ログインエフェクト */
+@keyframes streakPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.streak-highlight {
+    animation: streakPulse 1s ease-in-out;
+    color: #ff6347;
+    font-weight: bold;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+    #player-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    #game-time-container {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    #player-stats {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+/* プロフィールモーダル（将来拡張用） */
+#player-profile-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff8e1;
+    border-radius: 10px;
+    padding: 20px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #666;
+}
+
+.modal-close:hover {
+    color: #000;
+}
+
+.modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}

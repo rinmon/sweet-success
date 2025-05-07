@@ -1,0 +1,447 @@
+/* ユニット関連のスタイル */
+
+.unit-item {
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.unit-item button {
+    width: 100%;
+    padding: 10px 10px 10px 80px; /* 左側にキャラクター用のスペース */
+    min-height: 80px;
+    text-align: left;
+    border: 1px solid #a67c52;
+    background-color: #f5e7dc;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.unit-item button:hover:not(:disabled) {
+    background-color: #ecdbc9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.unit-item button:hover:not(:disabled) .unit-character {
+    transform: translateY(-5px);
+}
+
+.unit-item button:active:not(:disabled) .unit-character {
+    transform: scale(0.95);
+}
+
+.unit-item button:disabled {
+    background-color: #f0f0f0;
+    color: #888;
+    cursor: not-allowed;
+}
+
+.unit-item button:disabled .unit-character {
+    opacity: 0.5;
+}
+
+.unit-item button strong {
+    font-size: 16px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.unit-item .details {
+    display: block;
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* キャラクタースタイル */
+.unit-character {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 60px;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.unit-character img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.unit-character.unit-upgraded {
+    position: relative;
+}
+
+.unit-character.unit-upgraded:before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    width: 70px;
+    height: 70px;
+    background: radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,215,0,0) 70%);
+    border-radius: 50%;
+    z-index: 0;
+    animation: pulse 2s infinite;
+}
+
+.unit-level {
+    position: absolute;
+    bottom: -8px;
+    right: -8px;
+    font-size: 14px;
+    color: #FFD700;
+    text-shadow: 0 0 2px #000, 0 0 3px #000;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(0.95);
+        opacity: 0.7;
+    }
+}
+
+/* カーソルキャラクター */
+.cursor-character {
+    background: none;
+    position: relative;
+}
+
+.cursor-hand {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #ffd6a5;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    border: 2px solid #a67c52;
+    transform: rotate(45deg);
+    top: 5px;
+    left: 10px;
+}
+
+.cursor-hand:before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 20px;
+    background-color: #ffd6a5;
+    border-left: 2px solid #a67c52;
+    border-bottom: 2px solid #a67c52;
+    border-radius: 0 0 0 8px;
+    top: 25px;
+    left: 15px;
+}
+
+.cursor-hand:after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: #a67c52;
+    border-radius: 50%;
+    top: 15px;
+    left: 18px;
+    box-shadow: 8px 3px 0 #a67c52, 12px 9px 0 #a67c52;
+}
+
+/* おばあちゃんキャラクター */
+.grandma-character {
+    position: relative;
+}
+
+.grandma-face {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #ffe0bd;
+    border-radius: 50%;
+    top: 10px;
+    left: 10px;
+    border: 2px solid #a67c52;
+}
+
+.grandma-hair {
+    position: absolute;
+    width: 48px;
+    height: 25px;
+    background-color: #e0e0e0;
+    border-radius: 48px 48px 0 0;
+    top: 0;
+    left: 6px;
+    border-top: 2px solid #a67c52;
+    border-left: 2px solid #a67c52;
+    border-right: 2px solid #a67c52;
+}
+
+.grandma-eyes {
+    position: absolute;
+    width: 5px;
+    height: 2px;
+    background-color: #333;
+    border-radius: 2px;
+    top: 20px;
+    left: 16px;
+    box-shadow: 14px 0 0 #333;
+}
+
+.grandma-glasses {
+    position: absolute;
+    width: 14px;
+    height: 12px;
+    border: 1px solid #666;
+    border-radius: 50%;
+    top: 15px;
+    left: 13px;
+    box-shadow: 18px 0 0 -3px #666;
+}
+
+.grandma-mouth {
+    position: absolute;
+    width: 10px;
+    height: 5px;
+    border-bottom: 2px solid #333;
+    border-radius: 0 0 10px 10px;
+    top: 30px;
+    left: 25px;
+}
+
+.grandma-body {
+    position: absolute;
+    width: 30px;
+    height: 15px;
+    background-color: #f5a9b8;
+    border-radius: 5px;
+    top: 42px;
+    left: 15px;
+    border: 1px solid #a67c52;
+}
+
+/* 工場キャラクター */
+.factory-character {
+    position: relative;
+}
+
+.factory-building {
+    position: absolute;
+    width: 50px;
+    height: 35px;
+    background-color: #b0b0b0;
+    border-radius: 5px 5px 0 0;
+    top: 15px;
+    left: 5px;
+    border: 2px solid #666;
+}
+
+.factory-roof {
+    position: absolute;
+    width: 56px;
+    height: 10px;
+    background-color: #d84a35;
+    border-radius: 3px 3px 0 0;
+    top: 7px;
+    left: 2px;
+    border: 2px solid #666;
+}
+
+.factory-chimney1 {
+    position: absolute;
+    width: 10px;
+    height: 18px;
+    background-color: #b0b0b0;
+    top: -5px;
+    left: 10px;
+    border: 2px solid #666;
+    border-bottom: none;
+    border-radius: 3px 3px 0 0;
+}
+
+.factory-chimney2 {
+    position: absolute;
+    width: 8px;
+    height: 12px;
+    background-color: #b0b0b0;
+    top: 0;
+    left: 30px;
+    border: 2px solid #666;
+    border-bottom: none;
+    border-radius: 3px 3px 0 0;
+}
+
+.factory-window1, .factory-window2, .factory-window3 {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #f8f8ff;
+    border: 1px solid #666;
+    top: 25px;
+}
+
+.factory-window1 {
+    left: 12px;
+}
+
+.factory-window2 {
+    left: 26px;
+}
+
+.factory-window3 {
+    left: 40px;
+}
+
+.factory-smoke {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background-color: #eee;
+    border-radius: 50%;
+    top: -10px;
+    left: 11px;
+    opacity: 0;
+    animation: rise 2s infinite;
+}
+
+.factory-smoke:nth-child(2) {
+    width: 5px;
+    height: 5px;
+    top: -5px;
+    left: 32px;
+    animation-delay: 0.8s;
+}
+
+@keyframes rise {
+    0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-15px) scale(1.2);
+        opacity: 0;
+    }
+}
+
+.synergy-bonus {
+    color: #ff9f1a;
+    font-weight: bold;
+}
+
+/* マイルストーン達成アニメーション */
+.milestone-achievement {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(249, 166, 25, 0.95);
+    color: white;
+    padding: 20px 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 50px gold, 0 0 30px rgba(255, 215, 0, 0.8);
+    text-align: center;
+    z-index: 10000;
+    animation: milestone-entrance 0.5s ease-out, milestone-glow 1.5s infinite alternate;
+    transition: opacity 1s ease;
+}
+
+.milestone-achievement h3 {
+    font-size: 28px;
+    margin: 0 0 10px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.milestone-achievement p {
+    font-size: 20px;
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes milestone-entrance {
+    0% { 
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 0;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+    100% { 
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes milestone-glow {
+    0% {
+        box-shadow: 0 0 30px gold, 0 0 20px rgba(255, 215, 0, 0.7);
+    }
+    100% {
+        box-shadow: 0 0 60px gold, 0 0 40px rgba(255, 215, 0, 0.9);
+    }
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+    .milestone-achievement {
+        padding: 15px 20px;
+    }
+    
+    .milestone-achievement h3 {
+        font-size: 22px;
+    }
+    
+    .milestone-achievement p {
+        font-size: 16px;
+    }
+}
+
+/* ユニットのシナジー効果表示 */
+.synergy-info {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #0a84ff;
+    font-style: italic;
+}
+
+/* 特殊効果のアイコン */
+.effect-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+
+.effect-power {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff9f1a"><path d="M7 2v11h3v9l7-12h-4l3-8z"/></svg>');
+}
+
+.effect-speed {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%230a84ff"><path d="M15.9,18.45C17.25,17.24 18,15.57 18,14A6,6 0 0,0 12,8A6,6 0 0,0 6,14C6,15.5 6.75,17.2 8.1,18.45L7,22H17L15.9,18.45M12,6A8,8 0 0,1 20,14C20,16.18 19,18.34 17.22,20L16.7,21H20V23H4V21H7.3L6.78,20C5,18.34 4,16.18 4,14A8,8 0 0,1 12,6M12,12A2,2 0 0,0 10,14A2,2 0 0,0 12,16A2,2 0 0,0 14,14A2,2 0 0,0 12,12Z"/></svg>');
+}

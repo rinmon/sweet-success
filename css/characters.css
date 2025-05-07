@@ -1,0 +1,70 @@
+/* キャラクター関連のCSS */
+
+/* キャラクター共通スタイル */
+.character {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    pointer-events: none;
+    z-index: 1001;
+    transition: transform 0.3s ease;
+}
+
+/* おばあちゃんのスタイル */
+#grandma-character {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* 泥棒のスタイル */
+#thief-character {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* 警察のスタイル */
+#police-character {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* おばあちゃんのアニメーション */
+@keyframes grandma-bake {
+    0% { transform: translateY(0); }
+    25% { transform: translateY(-5px) rotate(-5deg); }
+    50% { transform: translateY(0); }
+    75% { transform: translateY(-5px) rotate(5deg); }
+    100% { transform: translateY(0); }
+}
+
+.grandma-bake {
+    animation: grandma-bake 2s ease infinite;
+}
+
+/* 泥棒のアニメーション */
+@keyframes thief-steal {
+    0% { transform: translateX(0) scale(1); opacity: 0; }
+    10% { transform: translateX(50px) scale(1); opacity: 1; }
+    50% { transform: translateX(100px) scale(1.1); }
+    90% { transform: translateX(150px) scale(1); opacity: 1; }
+    100% { transform: translateX(200px) scale(1); opacity: 0; }
+}
+
+.thief-steal {
+    animation: thief-steal 3s ease forwards;
+}
+
+/* 警察のアニメーション */
+@keyframes police-catch {
+    0% { transform: translateX(0) scale(1); opacity: 0; }
+    20% { transform: translateX(80px) scale(1); opacity: 1; }
+    60% { transform: translateX(120px) scale(1.2); }
+    100% { transform: translateX(150px) scale(1); opacity: 1; }
+}
+
+.police-catch {
+    animation: police-catch 2s ease forwards;
+}

@@ -1,0 +1,105 @@
+/* 謎めいた材料のエフェクト用スタイル */
+
+/* 謎の材料エフェクト */
+.mystery-ingredient {
+    position: relative;
+    animation: mysteryPulse 2s infinite alternate;
+    border-left: 3px solid goldenrod;
+    padding-left: 5px !important;
+    /* 読みやすさ向上のために背景色を調整 */
+    background-color: rgba(253, 245, 230, 0.8) !important;
+}
+
+.mystery-ingredient .ingredient-icon {
+    font-size: 1.2em;
+    animation: mysteryIcon 3s infinite alternate;
+    display: inline-block;
+    filter: drop-shadow(0 0 2px gold);
+}
+
+.mystery-ingredient .ingredient-name {
+    font-style: italic;
+    font-weight: bold;
+    /* コントラスト向上のためのテキスト装飾 */
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5), 0 0 5px rgba(255, 255, 255, 0.8);
+    color: #333 !important; /* 共通の暗い色を指定して読みやすくする */
+}
+
+/* 謎の材料にカーソルを合わせたときのエフェクト */
+.mystery-ingredient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
+}
+
+.mystery-ingredient:hover::before {
+    content: '✨';
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: gold;
+    opacity: 0.8;
+}
+
+@keyframes mysteryPulse {
+    0% {
+        background-color: rgba(253, 245, 230, 0.7);
+    }
+    100% {
+        background-color: rgba(255, 250, 205, 0.8);
+    }
+}
+
+@keyframes mysteryIcon {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.2) rotate(5deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+/* 揺れるヒントエフェクト */
+@keyframes floatEffect {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+.mystery-ingredient .ingredient-name {
+    animation: floatEffect 3s ease-in-out infinite;
+    display: inline-block;
+}
+
+/* キラキラエフェクト */
+.mystery-ingredient::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+                               rgba(255,255,255,0) 45%, 
+                               rgba(255,255,255,0.5) 50%, 
+                               rgba(255,255,255,0) 55%);
+    background-size: 200% 200%;
+    pointer-events: none;
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 100% 100%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="80px" height="80px" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <title>Factory</title>
+    <g id="Factory" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <!-- Factory Building -->
+        <rect id="Main-Building" fill="#B0B0B0" x="10" y="30" width="60" height="40" rx="2"></rect>
+        
+        <!-- Roof -->
+        <path d="M8,30 L72,30 L72,25 C72,23.8954305 71.1045695,23 70,23 L10,23 C8.8954305,23 8,23.8954305 8,25 L8,30 Z" id="Roof" fill="#D84A35"></path>
+        
+        <!-- Chimneys -->
+        <rect id="Chimney1" fill="#A0A0A0" x="20" y="8" width="10" height="15" rx="1"></rect>
+        <rect id="Chimney2" fill="#A0A0A0" x="55" y="12" width="8" height="11" rx="1"></rect>
+        
+        <!-- Smoke -->
+        <circle id="Smoke1" fill="#EEEEEE" opacity="0.7" cx="25" cy="5" r="3"></circle>
+        <circle id="Smoke2" fill="#EEEEEE" opacity="0.8" cx="23" cy="2" r="2"></circle>
+        <circle id="Smoke3" fill="#EEEEEE" opacity="0.6" cx="59" cy="9" r="2.5"></circle>
+        <circle id="Smoke4" fill="#EEEEEE" opacity="0.7" cx="61" cy="6" r="1.5"></circle>
+        
+        <!-- Windows -->
+        <rect id="Window1" fill="#F8F8FF" x="20" y="40" width="10" height="10" rx="1"></rect>
+        <rect id="Window2" fill="#F8F8FF" x="40" y="40" width="10" height="10" rx="1"></rect>
+        <rect id="Window3" fill="#F8F8FF" x="20" y="55" width="10" height="10" rx="1"></rect>
+        <rect id="Window4" fill="#F8F8FF" x="40" y="55" width="10" height="10" rx="1"></rect>
+        
+        <!-- Door -->
+        <rect id="Door" fill="#754C24" x="55" y="50" width="10" height="20" rx="1"></rect>
+        <circle id="DoorKnob" fill="#FFCC00" cx="57" cy="60" r="1"></circle>
+        
+        <!-- Window Details -->
+        <path d="M20,45 L30,45" id="Window-Detail1" stroke="#666666"></path>
+        <path d="M40,45 L50,45" id="Window-Detail2" stroke="#666666"></path>
+        <path d="M20,60 L30,60" id="Window-Detail3" stroke="#666666"></path>
+        <path d="M40,60 L50,60" id="Window-Detail4" stroke="#666666"></path>
+        <path d="M25,40 L25,50" id="Window-Detail5" stroke="#666666"></path>
+        <path d="M45,40 L45,50" id="Window-Detail6" stroke="#666666"></path>
+        <path d="M25,55 L25,65" id="Window-Detail7" stroke="#666666"></path>
+        <path d="M45,55 L45,65" id="Window-Detail8" stroke="#666666"></path>
+    </g>
+</svg>

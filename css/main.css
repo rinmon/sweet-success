@@ -1,0 +1,558 @@
+/* メインCSS */
+:root {
+    --main-brown: #8B4513;
+    --light-brown: #a5571a;
+    --cream: #f9e8c9;
+    --light-cream: #fff3e0;
+    --shadow: rgba(139, 69, 19, 0.3);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--cream);
+    color: #333;
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    line-height: 1.5;
+    background-image: linear-gradient(to bottom, var(--cream), #f5d6a8);
+}
+
+.container {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px var(--shadow);
+    width: 100%;
+    max-width: 1200px;
+    border: 2px solid #d2691e;
+    height: 95vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* コンテナ内部のスクロールを防止 */
+}
+
+header {
+    flex-shrink: 0;
+}
+
+header h1 {
+    text-align: center;
+    color: var(--main-brown);
+    margin: 0 0 15px 0;
+    font-size: 1.8em;
+    text-shadow: 1px 1px 2px var(--shadow);
+    position: relative;
+}
+
+.help-btn {
+    font-size: 0.5em;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: #8B4513;
+    color: white;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    margin-left: 10px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.help-btn:hover {
+    background-color: #a5571a;
+    transform: scale(1.1);
+}
+
+main {
+    display: flex;
+    gap: 15px;
+    flex: 1;
+    overflow: hidden; /* 全体のスクロールを防止 */
+    min-height: 0; /* Flexboxの不具合を解決 */
+}
+
+#game-area {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 300px;
+}
+
+#cookie-display {
+    background-color: var(--light-cream);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ffe0b2;
+    flex-shrink: 0;
+}
+
+#cookie-display p {
+    margin: 5px 0;
+    font-size: 1.2em;
+}
+
+#cookie-display span {
+    font-weight: bold;
+    color: #e65100; /* Deep orange */
+    display: inline-block;
+    min-width: 50px;
+    text-align: right;
+}
+
+#store-area {
+    flex: 2;
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #eee;
+    overflow-y: auto; /* このエリアのみスクロール可能に */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#store-area h2 {
+    color: var(--main-brown);
+    border-bottom: 2px solid #e65100;
+    padding-bottom: 5px;
+    margin: 0 0 10px 0;
+    font-size: 1.2em;
+}
+
+.item-button {
+    display: block;
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #ffcc80; /* Light orange */
+    border: 1px solid #ffa726; /* Orange */
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.95em;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.upgrade-item .item-button {
+    background-color: #a1c7ff; /* Light blue for upgrades */
+    border: 1px solid #4a8af4; /* Blue */
+}
+
+.upgrade-item .item-button:hover {
+    background-color: #80b0ff;
+}
+
+.item-button:hover {
+    background-color: #ffa726;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.item-button:disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+    color: #9e9e9e;
+    border-color: #bdbdbd;
+}
+
+.item-button .details {
+    font-size: 0.8em;
+    color: #555;
+}
+
+.item-button:disabled .details {
+    color: #aaa;
+}
+
+footer {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: #777;
+    padding-top: 10px;
+    border-top: 1px dashed #d2691e;
+    flex-shrink: 0;
+}
+
+footer button {
+    background-color: #8B4513;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin: 0 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+footer button:hover {
+    background-color: #a5571a;
+}
+
+/* ステータスログは status.css に移動しました */
+
+
+/* モーダル */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: auto;
+}
+
+.modal-content {
+    background-color: #fff3e0;
+    margin: 5% auto;
+    padding: 20px;
+    border: 2px solid #d2691e;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 800px;
+    box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.close {
+    color: #8B4513;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #a5571a;
+}
+
+.tutorial-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    border-left: 4px solid #d2691e;
+}
+
+.tutorial-section h3 {
+    color: #8B4513;
+    margin-top: 0;
+    font-size: 1.2em;
+}
+
+.tutorial-section p, .tutorial-section ul {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.tutorial-section li {
+    margin-bottom: 8px;
+}
+
+.close-btn {
+    display: block;
+    margin: 20px auto 0;
+    padding: 8px 25px;
+    background-color: #8B4513;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.close-btn:hover {
+    background-color: #a5571a;
+}
+
+/* ユーティリティクラス */
+.hidden {
+    display: none !important;
+}
+
+/* レスポンシブ対応 - パソコン、タブレット、スマホ向け */
+
+/* 大型画面（PC） */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px;
+        padding: 20px;
+    }
+    
+    header h1 {
+        font-size: 2em;
+    }
+    
+    #game-area {
+        flex: 1;
+    }
+    
+    #store-area {
+        flex: 2;
+    }
+    
+    #big-cookie-btn {
+        transform: scale(1.1);
+    }
+    
+    .tab-button {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+}
+
+/* 中型画面（小型PC、タブレット横） */
+@media (min-width: 769px) and (max-width: 1199px) {
+    .container {
+        max-width: 95%;
+        padding: 15px;
+    }
+    
+    main {
+        gap: 15px;
+    }
+    
+    #game-area {
+        flex: 1;
+    }
+    
+    #store-area {
+        flex: 1.5;
+    }
+    
+    .tab-button {
+        padding: 8px 15px;
+    }
+}
+
+/* タブレット縦向き、大型スマホ */
+@media (min-width: 601px) and (max-width: 768px) {
+    .container {
+        height: auto;
+        max-height: none;
+        overflow: auto;
+        max-width: 100%;
+        padding: 12px;
+    }
+    
+    main {
+        flex-direction: column;
+    }
+    
+    #game-area, #store-area {
+        flex: none;
+        width: 100%;
+    }
+    
+    #game-area {
+        margin-bottom: 15px;
+    }
+    
+    #big-cookie-btn {
+        max-width: 150px;
+        margin: 0 auto;
+    }
+    
+    .tab-button {
+        padding: 10px;
+        font-size: 14px;
+        flex: 1;
+    }
+    
+    /* タッチターゲットを大きく */
+    .item-button, .sell-btn, .buy-item-btn, .buy-ingredient-btn, .cook-recipe-btn {
+        padding: 12px;
+        min-height: 44px; /* タッチ操作に最適な高さ */
+    }
+    
+    footer button {
+        padding: 8px 15px;
+        min-height: 44px;
+    }
+}
+
+/* スマホ向け */
+@media (max-width: 600px) {
+    body {
+        padding: 5px;
+    }
+    
+    .container {
+        height: auto;
+        max-height: none;
+        overflow: auto;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    
+    header h1 {
+        font-size: 1.5em;
+    }
+    
+    .help-btn {
+        width: 22px;
+        height: 22px;
+        font-size: 0.6em;
+    }
+    
+    main {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    #game-area, #store-area {
+        flex: none;
+        width: 100%;
+    }
+    
+    #game-area {
+        margin-bottom: 10px;
+    }
+    
+    #cookie-display p {
+        font-size: 1em;
+    }
+    
+    #big-cookie-btn {
+        max-width: 130px;
+        margin: 0 auto;
+    }
+    
+    /* タブをスクロール可能に */
+    .tab-buttons {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        white-space: nowrap;
+        display: flex;
+        padding-bottom: 5px;
+    }
+    
+    .tab-button {
+        padding: 8px 12px;
+        font-size: 13px;
+        flex: none;
+        min-width: 80px;
+    }
+    
+    /* タッチターゲットをさらに大きく */
+    .item-button, .sell-btn, .buy-item-btn, .buy-ingredient-btn, .cook-recipe-btn {
+        padding: 12px 10px;
+        min-height: 48px;
+        font-size: 14px;
+    }
+    
+    /* ステータスログを小さく */
+    #status-log:not(.expanded) {
+        max-height: 150px;
+    }
+    
+    #status-messages {
+        max-height: 100px;
+    }
+    
+    .status-control-btn {
+        width: 30px;
+        height: 30px;
+    }
+    
+    /* 売却ボタンを縦に配置 */
+    .market-actions .sell-actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    footer {
+        margin-top: 10px;
+    }
+    
+    footer button {
+        padding: 8px 12px;
+        min-height: 44px;
+        margin: 0 2px;
+    }
+    
+    /* グリッド表示を単一カラムに */
+    #ingredients-container, #recipes-container, #market-items {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ツールチップスタイル */
+.tooltip {
+    font-size: 0.7em;
+    color: #777;
+    font-weight: normal;
+    margin-left: 8px;
+}
+
+/* タブシステム */
+.tab-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.tab-buttons {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.tab-button {
+    padding: 8px 15px;
+    background-color: #f0f0f0;
+    border: none;
+    border-right: 1px solid #ddd;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.tab-button:first-child {
+    border-top-left-radius: 5px;
+}
+
+.tab-button:last-child {
+    border-top-right-radius: 5px;
+    border-right: none;
+}
+
+.tab-button.active {
+    background-color: #fff;
+    font-weight: bold;
+    color: var(--main-brown);
+    border-bottom: 2px solid var(--main-brown);
+}
+
+.tab-content {
+    display: none;
+    padding: 5px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.tab-content.active {
+    display: block;
+}
