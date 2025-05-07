@@ -135,7 +135,7 @@ const ingredients = {
 };
 
 // 材料の購入
-function buyIngredient(ingredientId, amount = 1) {
+window.buyIngredient = function(ingredientId, amount = 1) {
     const ingredient = ingredients[ingredientId];
     
     if (!ingredient || !ingredient.unlocked) {
@@ -158,6 +158,8 @@ function buyIngredient(ingredientId, amount = 1) {
     updateCookieDisplay();
     updateRecipeDisplay(); // 材料取得後にレシピ表示も更新
     
+    // 変更をセーブ
+    saveGameData();
     return true;
 }
 
@@ -181,6 +183,8 @@ function unlockIngredient(ingredientId) {
     updateIngredientDisplay();
     updateCookieDisplay();
     
+    // 変更をセーブ
+    saveGameData();
     return true;
 }
 
@@ -225,6 +229,21 @@ function updateIngredientDisplay() {
     });
     
     container.innerHTML = html;
+    
+    // 購入ボタンにイベントリスナーを動的に追加
+    setTimeout(() => {
+        const buyButtons = document.querySelectorAll('.buy-ingredient-btn');
+        buyButtons.forEach(button => {
+            const ingredientId = button.closest('.ingredient-item').dataset.id;
+            button.onclick = () => buyIngredient(ingredientId);
+        });
+        
+        const unlockButtons = document.querySelectorAll('.unlock-ingredient-btn');
+        unlockButtons.forEach(button => {
+            const ingredientId = button.closest('.ingredient-item').dataset.id;
+            button.onclick = () => unlockIngredient(ingredientId);
+        });
+    }, 100);
 }
 
 // 材料の確認
