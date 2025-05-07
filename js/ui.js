@@ -356,16 +356,17 @@ function toggleBurgerMenu() {
     const mobileNav = document.getElementById('mobile-nav');
     const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
     
+    console.log('Toggle burger menu called, current state:', burgerMenuActive); // デバッグ用
+    
     if (!burgerMenuActive) {
         // メニュー表示
         burgerButton.classList.add('active');
-        mobileNav.style.display = 'block'; // 表示を確実にする
-        setTimeout(function() {
-            mobileNav.classList.add('active');
-            mobileNavOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden'; // 背景スクロール防止
-            burgerMenuActive = true;
-        }, 10);
+        mobileNavOverlay.classList.add('active');
+        mobileNav.classList.add('active');
+        document.body.style.overflow = 'hidden'; // 背景スクロール防止
+        burgerMenuActive = true;
+        
+        console.log('Menu should be visible now');
     } else {
         closeBurgerMenu();
     }
@@ -383,12 +384,7 @@ function closeBurgerMenu() {
     document.body.style.overflow = ''; // 背景スクロール復活
     burgerMenuActive = false;
     
-    // アニメーション完了後に非表示にする
-    setTimeout(function() {
-        if (!burgerMenuActive) {
-            mobileNav.style.display = 'none';
-        }
-    }, 300);
+    console.log('Menu closed');
 }
 
 // 初期化
