@@ -19,11 +19,28 @@
     <link rel="stylesheet" href="css/inventory.css">
     <link rel="stylesheet" href="css/version.css">
     <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/burger-menu.css">
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Sweet Success <button id="help-button" class="help-btn" title="遊び方を見る">?</button></h1>
+            
+            <!-- バーガーメニュー -->
+            <div class="burger-menu-container">
+                <button id="burger-menu-btn" class="burger-button" aria-label="メニュー">
+                    <div class="burger-icon"></div>
+                </button>
+                <div id="mobile-nav-overlay" class="mobile-nav-overlay"></div>
+                <nav id="mobile-nav" class="mobile-nav">
+                    <a href="#" class="mobile-nav-item active" data-tab="units-tab">ユニット</a>
+                    <a href="#" class="mobile-nav-item" data-tab="upgrades-tab">アップグレード</a>
+                    <a href="#" class="mobile-nav-item" data-tab="recipes-tab">レシピ</a>
+                    <a href="#" class="mobile-nav-item" data-tab="market-tab">マーケット</a>
+                    <a href="#" class="mobile-nav-item" data-tab="stats-tab">統計</a>
+                    <a href="#" class="mobile-nav-item" data-tab="orders-tab">注文</a>
+                </nav>
+            </div>
             <div id="player-info">
                 <div id="player-name-container">
                     <span id="player-name">プレイヤー</span>

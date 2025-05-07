@@ -1,5 +1,8 @@
 // ui.js - UIの挙動を管理
 
+// バーガーメニューの状態
+let burgerMenuActive = false;
+
 // デバイスタイプ認識
 // ユーザーのデバイスタイプを検出し、適切なUIを提供する
 const deviceDetector = {
@@ -273,6 +276,94 @@ function optimizeTabs() {
     }
 }
 
+// バーガーメニュー機能の初期化
+function setupBurgerMenu() {
+    const burgerButton = document.getElementById('burger-menu-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+    const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+    
+    if (!burgerButton || !mobileNav || !mobileNavOverlay) return;
+    
+    // バーガーメニューボタンのクリックイベント
+    burgerButton.addEventListener('click', toggleBurgerMenu);
+    
+    // オーバーレイクリックでメニューを閉じる
+    mobileNavOverlay.addEventListener('click', closeBurgerMenu);
+    
+    // モバイルナビゲーションアイテムのクリックイベント
+    mobileNavItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // クリックされたタブを取得
+            const tabId = this.getAttribute('data-tab');
+            
+            // アクティブクラスの更新
+            mobileNavItems.forEach(navItem => {
+                navItem.classList.remove('active');
+            });
+            this.classList.add('active');
+            
+            // 対応するタブを切り替え
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            
+            // メニューを閉じる
+            closeBurgerMenu();
+            
+            // 対応するメインのタブボタンも更新（表示されている場合）
+            const mainTabButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+            if (mainTabButton) {
+                document.querySelectorAll('.tab-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                mainTabButton.classList.add('active');
+            }
+        });
+    });
+    
+    // 画面サイズ変更時にメニュー状態を更新
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 600 && burgerMenuActive) {
+            closeBurgerMenu();
+        }
+    });
+}
+
+// バーガーメニュー表示・非表示切り替え
+function toggleBurgerMenu() {
+    const burgerButton = document.getElementById('burger-menu-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+    
+    if (!burgerMenuActive) {
+        // メニュー表示
+        burgerButton.classList.add('active');
+        mobileNav.classList.add('active');
+        mobileNavOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // 背景スクロール防止
+        burgerMenuActive = true;
+    } else {
+        closeBurgerMenu();
+    }
+}
+
+// バーガーメニューを閉じる
+function closeBurgerMenu() {
+    const burgerButton = document.getElementById('burger-menu-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+    
+    burgerButton.classList.remove('active');
+    mobileNav.classList.remove('active');
+    mobileNavOverlay.classList.remove('active');
+    document.body.style.overflow = ''; // 背景スクロール復活
+    burgerMenuActive = false;
+}
+
 // 初期化
 function initUI() {
     // デバイスタイプの検出と最適化
@@ -285,6 +376,7 @@ function initUI() {
     setupTabSystem();
     setupStatusLogEnhancements();
     setupResponsiveUI();
+    setupBurgerMenu(); // バーガーメニューの初期化
     
     // マーケットアイテムの表示
     renderMarketItems();
