@@ -10,8 +10,8 @@
 const gameVersion = {
     major: 1,
     minor: 3,
-    patch: 1,
-    date: '2025-05-07',
+    patch: 2,
+    date: '2025-05-08',
     
     // バージョン文字列を取得
     toString: function() {
@@ -25,6 +25,14 @@ const gameVersion = {
     
     // 変更履歴
     changelog: [
+        {
+            version: "1.3.2",
+            date: "2025-05-08",
+            changes: [
+                "バーガーメニューの表示問題を修正",
+                "メニューアイテムが選択できない問題を解決"
+            ]
+        },
         {
             version: "1.3.1",
             date: "2025-05-07",

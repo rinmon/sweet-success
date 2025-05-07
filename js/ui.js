@@ -286,15 +286,24 @@ function setupBurgerMenu() {
     if (!burgerButton || !mobileNav || !mobileNavOverlay) return;
     
     // バーガーメニューボタンのクリックイベント
-    burgerButton.addEventListener('click', toggleBurgerMenu);
+    burgerButton.addEventListener('click', function(e) {
+        e.stopPropagation(); // イベント伝播を止める
+        toggleBurgerMenu();
+    });
     
     // オーバーレイクリックでメニューを閉じる
-    mobileNavOverlay.addEventListener('click', closeBurgerMenu);
+    mobileNavOverlay.addEventListener('click', function(e) {
+        e.stopPropagation(); // イベント伝播を止める
+        closeBurgerMenu();
+    });
     
     // モバイルナビゲーションアイテムのクリックイベント
     mobileNavItems.forEach(item => {
         item.addEventListener('click', function(e) {
             e.preventDefault();
+            e.stopPropagation(); // イベント伝播を止める
+            
+            console.log('Mobile nav item clicked:', this.getAttribute('data-tab')); // デバッグ用
             
             // クリックされたタブを取得
             const tabId = this.getAttribute('data-tab');
@@ -309,10 +318,18 @@ function setupBurgerMenu() {
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
             });
-            document.getElementById(tabId).classList.add('active');
+            
+            const targetTab = document.getElementById(tabId);
+            if (targetTab) {
+                targetTab.classList.add('active');
+                // タブ内容が見えるようにスクロール
+                targetTab.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
             
             // メニューを閉じる
-            closeBurgerMenu();
+            setTimeout(function() {
+                closeBurgerMenu();
+            }, 300); // 少し遅延させてクリックを確実に処理
             
             // 対応するメインのタブボタンも更新（表示されている場合）
             const mainTabButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
@@ -342,10 +359,13 @@ function toggleBurgerMenu() {
     if (!burgerMenuActive) {
         // メニュー表示
         burgerButton.classList.add('active');
-        mobileNav.classList.add('active');
-        mobileNavOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden'; // 背景スクロール防止
-        burgerMenuActive = true;
+        mobileNav.style.display = 'block'; // 表示を確実にする
+        setTimeout(function() {
+            mobileNav.classList.add('active');
+            mobileNavOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // 背景スクロール防止
+            burgerMenuActive = true;
+        }, 10);
     } else {
         closeBurgerMenu();
     }
@@ -362,6 +382,13 @@ function closeBurgerMenu() {
     mobileNavOverlay.classList.remove('active');
     document.body.style.overflow = ''; // 背景スクロール復活
     burgerMenuActive = false;
+    
+    // アニメーション完了後に非表示にする
+    setTimeout(function() {
+        if (!burgerMenuActive) {
+            mobileNav.style.display = 'none';
+        }
+    }, 300);
 }
 
 // 初期化
