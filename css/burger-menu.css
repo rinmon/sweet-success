@@ -9,7 +9,7 @@
     display: none; /* デフォルトでは非表示 */
     position: fixed;
     top: 15px;
-    right: 15px;
+    right: 60px; /* 管理ボタンと重ならないように調整 */
     width: 40px;
     height: 40px;
     background-color: var(--main-brown);
