@@ -3,6 +3,8 @@
  * 注文の生成、管理、保存などの基本機能を提供
  */
 
+import ordersProcessing from './orders-processing.js';
+
 const ordersCore = {
     // アクティブな注文リスト
     activeOrders: [],
@@ -239,118 +241,17 @@ const ordersCore = {
     
     // 注文を処理（完了または拒否）
     processOrder: function(orderId, action) {
-        // 対象の注文を探す
-        const orderIndex = this.activeOrders.findIndex(order => order.id === orderId);
-        
-        if (orderIndex === -1) {
-            return false; // 注文が見つからない
-        }
-        
-        const order = this.activeOrders[orderIndex];
-        
-        if (action === 'complete') {
-            // 注文に必要なクッキーがあるかチェック
-            if (!ordersInventory.checkCookieInventory(order.items)) {
-                addStatusMessage("注文に必要なクッキーがありません！", "error", true);
-                return false;
-            }
-            
-            // クッキーを消費
-            ordersInventory.consumeCookies(order.items);
-            
-            // 報酬を加算
-            cookieCount += order.reward;
-            
-            // 完了統計を更新
-            this.stats.completed++;
-            this.stats.totalRevenue += order.reward;
-            
-            // ベストセラーレシピを更新
-            this.updateBestSeller(order.items);
-            
-            // 売上を記録
-            this.recordSales(order);
-            
-            // 完了メッセージ
-            const specialText = order.special ? '【特別注文】' : '';
-            addStatusMessage(`${specialText}${order.customerName}の注文が完了しました！報酬${formatNumber(order.reward)}クッキーを獲得！`, "success", true);
-            
-            // アニメーション再生
-            if (typeof ordersUI !== 'undefined' && ordersUI.playPackagingAnimation) {
-                ordersUI.playPackagingAnimation(order);
-            }
-            
-            // 経験値を追加
-            if (typeof player !== 'undefined' && player.addExperience) {
-                // 報酬の10%を経験値として加算
-                const expGain = Math.ceil(order.reward / 10);
-                player.addExperience(expGain);
-            }
-            
-            // 完了音を再生
-            playSound('orderComplete');
-        } 
-        else if (action === 'reject') {
-            // 拒否統計を更新
-            this.stats.rejected++;
-            
-            // 拒否メッセージ
-            addStatusMessage(`${order.customerName}の注文をキャンセルしました。`, "info", true);
-            
-            // キャンセル音を再生
-            playSound('orderCancel');
-        }
-        
-        // 注文リストから削除
-        this.activeOrders.splice(orderIndex, 1);
-        
-        // イベント発火
-        if (typeof ordersEvents !== 'undefined') {
-            if (action === 'complete' && ordersEvents.onOrderCompleted) {
-                ordersEvents.onOrderCompleted(order);
-            } else if (action === 'reject' && ordersEvents.onOrderRejected) {
-                ordersEvents.onOrderRejected(order);
-            }
-        }
-        
-        // データを保存
-        this.saveData();
-        
-        return true;
+        return ordersProcessing.processOrder(this, orderId, action, inventory, ui, playSound, addStatusMessage);
     },
     
     // ベストセラーレシピの更新
     updateBestSeller: function(orderItems) {
-        for (const [recipeId, quantity] of Object.entries(orderItems)) {
-            // レシピごとの販売数を追跡
-            if (!this.stats.recipeSales) {
-                this.stats.recipeSales = {};
-            }
-            
-            if (!this.stats.recipeSales[recipeId]) {
-                this.stats.recipeSales[recipeId] = 0;
-            }
-            
-            this.stats.recipeSales[recipeId] += quantity;
-            
-            // ベストセラーを更新
-            if (this.stats.recipeSales[recipeId] > this.stats.bestSellingCount) {
-                this.stats.bestSellingRecipe = recipeId;
-                this.stats.bestSellingCount = this.stats.recipeSales[recipeId];
-            }
-        }
+        ordersProcessing.updateBestSeller(this, orderItems);
     },
     
     // 売上データを統計システムに記録
     recordSales: function(order) {
-        // 統計システムが実装されている場合、売上を記録
-        if (typeof cookieStats !== 'undefined' && cookieStats.recordSale) {
-            for (const [recipeId, quantity] of Object.entries(order.items)) {
-                // レシピごとに売上を記録
-                const recipeRevenue = Math.floor(order.reward * (quantity / Object.values(order.items).reduce((a, b) => a + b, 0)));
-                cookieStats.recordSale(recipeId, quantity, recipeRevenue);
-            }
-        }
+        ordersProcessing.recordSales(order, this.stats, order.reward);
     },
     
     // 注文の有効期限をチェックして期限切れを処理

@@ -250,31 +250,36 @@ const orderSystem = {
         
         if (action === 'complete') {
             // 注文に必要なクッキーがあるかチェック
-            if (!this.checkCookieInventory(order.items)) {
-                addStatusMessage("注文に必要なクッキーがありません！", "error", true);
+            if (!ordersProcessing.checkCookieInventory(order.items)) {
+                // 在庫不足時のエラーメッセージ
+                ui.showStatusMessage('在庫が不足しています。注文を完了できません。', 'error');
+                this.updateOrderButtons();
                 return false;
             }
-            
-            // クッキーを消費
-            this.consumeCookies(order.items);
-            
-            // 報酬を加算
-            cookieCount += order.reward;
-            
-            // 完了統計を更新
+
+            // 在庫を消費
+            ordersProcessing.consumeCookies(order.items);
+
+            // 売上統計を更新
             this.stats.completed++;
             this.stats.totalRevenue += order.reward;
-            
-            // ベストセラーレシピを更新
             this.updateBestSeller(order.items);
-            
-            // 売上を記録
-            this.recordSales(order);
-            
+
+            // 注文リストから削除
+            this.activeOrders.splice(orderIndex, 1);
+
+            // データを保存
+            this.saveData();
+
+            // 注文ボタンの状態を更新
+            this.updateOrderButtons();
+
+            // 注文表示を更新
+            this.renderOrders();
+
             // 完了メッセージ
-            const specialText = order.special ? '【特別注文】' : '';
-            addStatusMessage(`${specialText}${order.customerName}の注文が完了しました！報酬${formatNumber(order.reward)}クッキーを獲得！`, "success", true);
-            
+            ui.showStatusMessage('注文を完了しました！', 'success');
+
             // アニメーション再生
             this.playPackagingAnimation(order);
         }
@@ -295,38 +300,17 @@ const orderSystem = {
         // データを保存
         this.saveData();
         
-        // 注文ボタンの状態を更新
-        this.updateOrderButtons();
-        
-        // 注文表示を更新
-        this.renderOrders();
-        
-        return true;
-    }
-        
-        // 注文リストから削除
-        this.activeOrders.splice(orderIndex, 1);
-        
-        // データを保存
-        this.saveData();
-        
         return true;
     },
     
     // 注文に必要なクッキーが在庫にあるかチェック
     checkCookieInventory: function(orderItems) {
-        if (!inventory || !inventory.cookies) {
-            return false;
-        }
-        
-        for (const [recipeId, quantity] of Object.entries(orderItems)) {
-            const cookieInStock = inventory.cookies.find(item => item.id === recipeId);
-            if (!cookieInStock || cookieInStock.amount < quantity) {
-                return false;
-            }
-        }
-        
-        return true;
+        return ordersProcessing.checkCookieInventory(orderItems);
+    },
+    
+    // 注文に必要なクッキーを消費
+    consumeCookies: function(orderItems) {
+        ordersProcessing.consumeCookies(orderItems);
     },
     
     // 注文完了ボタンの状態を更新（在庫があれば有効化）
@@ -334,26 +318,18 @@ const orderSystem = {
         this.activeOrders.forEach(order => {
             const completeBtn = document.querySelector(`.complete-order[data-order-id="${order.id}"]`);
             if (completeBtn) {
-                const canComplete = this.checkCookieInventory(order.items);
-                completeBtn.disabled = !canComplete;
-                completeBtn.classList.toggle('btn-ready', canComplete);
-                
-                // 在庫が揃った時に視覚的フィードバックを提供
-                if (canComplete && completeBtn.disabled) {
+                // 在庫が十分なら有効化
+                if (ordersProcessing.checkCookieInventory(order.items)) {
                     completeBtn.disabled = false;
-                    completeBtn.classList.add('btn-ready-animation');
-                    setTimeout(() => {
-                        completeBtn.classList.remove('btn-ready-animation');
-                    }, 1000);
+                    completeBtn.classList.remove('disabled');
+                    completeBtn.title = '';
+                } else {
+                    completeBtn.disabled = true;
+                    completeBtn.classList.add('disabled');
+                    completeBtn.title = '在庫不足';
                 }
             }
         });
-    },
-    
-    // 注文に必要なクッキーを消費
-    consumeCookies: function(orderItems) {
-        // 実際のインベントリシステムと連携する予定
-        // 現時点では何もしない
     },
     
     // ベストセラーレシピの更新
@@ -547,3 +523,38 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     }, 1000);
 });
+
+import ordersCore from './modules/orders-core.js';
+import ordersProcessing from './modules/orders-processing.js'; 
+import ordersUI from './modules/orders-ui.js';
+
+// DOMContentLoadedイベントリスナー
+document.addEventListener('DOMContentLoaded', () => {
+    ordersCore.init();
+    // 初期注文表示
+    ordersUI.renderOrders(ordersCore.activeOrders, ordersCore.processOrder.bind(ordersCore));
+    // 定期的な注文更新
+    setInterval(() => {
+        ordersCore.checkOrderTimeouts();
+        ordersCore.tryGenerateOrder();
+        // UI更新はordersCore内で行われるか、別途UIモジュールで制御
+    }, 1000); 
+});
+
+// グローバルアクセス可能なAPI（必要に応じて）
+window.orders = {
+    core: ordersCore,
+    ui: ordersUI,
+    processing: ordersProcessing, 
+    // 例: 手動で注文を生成するデバッグ用関数
+    generateTestOrder: () => {
+        ordersCore.tryGenerateOrder(true); // 強制生成フラグ
+        ordersUI.renderOrders(ordersCore.activeOrders, ordersCore.processOrder.bind(ordersCore));
+    },
+    // 例: アクティブな注文をコンソールに出力
+    logActiveOrders: () => {
+        console.log(ordersCore.activeOrders);
+    }
+};
+
+})();

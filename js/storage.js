@@ -14,6 +14,14 @@ function saveGame() {
             return acc;
         }, {}),
         ingredients: ingredients,
+        // レシピデータを保存（解禁状態と現在のレシピ内容）
+        recipesSave: Object.keys(recipes).reduce((acc, key) => {
+            acc[key] = {
+                unlocked: recipes[key].unlocked,
+                content: recipes[key].content
+            };
+            return acc;
+        }, {}),
         // 材料業者データを保存
         suppliers: typeof saveSupplierData === 'function' ? saveSupplierData() : {}
     };
@@ -53,6 +61,16 @@ function loadGame() {
                 if (ingredients[ingredientId]) {
                     ingredients[ingredientId].amount = gameData.ingredients[ingredientId].amount || 0;
                     ingredients[ingredientId].unlocked = gameData.ingredients[ingredientId].unlocked || ingredients[ingredientId].unlocked;
+                }
+            }
+        }
+        
+        // レシピの状態を復元（解禁状態のみ、材料数は元の定義を維持）
+        if (gameData.recipesSave) {
+            for (const recipeId in gameData.recipesSave) {
+                if (recipes[recipeId]) {
+                    recipes[recipeId].unlocked = gameData.recipesSave[recipeId].unlocked || recipes[recipeId].unlocked;
+                    // 注意: 材料数は元の定義通りに維持する（累積的に増やさない）
                 }
             }
         }

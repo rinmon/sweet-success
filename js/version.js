@@ -28,7 +28,7 @@ function updateVersionDisplay() {
 const gameVersion = {
     major: 1,
     minor: 4,
-    patch: 2,
+    patch: 3,
     date: '2025-05-08',
     
     // バージョン文字列を取得
@@ -58,6 +58,16 @@ const gameVersion = {
     
     // 変更履歴
     changelog: [
+        {
+            version: "1.4.3",
+            date: "2025-05-08",
+            changes: [
+                "[FIX] レシピデータの保存・読み込み問題を修正",
+                "[FIX] 材料があっても注文購入ができない問題を修正",
+                "[ENHANCE] 材料から自動調理する機能を追加",
+                "在庫管理と注文処理の連携を強化"
+            ]
+        },
         {
             version: "1.4.2",
             date: "2025-05-08",
