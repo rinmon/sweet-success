@@ -23,6 +23,12 @@ body {
     min-height: 100vh;
     line-height: 1.5;
     background-image: linear-gradient(to bottom, var(--cream), #f5d6a8);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .container {
@@ -36,7 +42,8 @@ body {
     height: 95vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* コンテナ内部のスクロールを防止 */
+    overflow: hidden;
+    touch-action: manipulation;
 }
 
 header {
@@ -76,8 +83,9 @@ main {
     display: flex;
     gap: 15px;
     flex: 1;
-    overflow: hidden; /* 全体のスクロールを防止 */
-    min-height: 0; /* Flexboxの不具合を解決 */
+    overflow: hidden;
+    min-height: 0;
+    touch-action: pan-y;
 }
 
 #game-area {
@@ -391,29 +399,48 @@ footer button:hover {
 }
 
 /* スマホ向け */
-@media (max-width: 600px) {
-    body {
-        padding: 5px;
-    }
-    
+@media screen and (max-width: 768px) {
     .container {
-        height: auto;
-        max-height: none;
-        overflow: auto;
         padding: 10px;
-        border-radius: 5px;
+        max-width: 100%;
     }
-    
+
     header h1 {
         font-size: 1.5em;
     }
-    
-    .help-btn {
-        width: 22px;
-        height: 22px;
-        font-size: 0.6em;
+
+    .item-button {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        font-size: 1em;
     }
-    
+
+    .item-button .details {
+        font-size: 0.9em;
+    }
+
+    .help-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.7em;
+    }
+
+    .touch-interactive {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+
+    .touch-active {
+        opacity: 0.8;
+        transform: scale(0.95);
+    }
+
+    #game-area {
+        min-width: 280px;
+    }
+}
+
     main {
         flex-direction: column;
         gap: 10px;

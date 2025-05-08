@@ -74,12 +74,34 @@ const deviceDetector = {
     // タッチデバイス向け最適化
     optimizeForTouch() {
         // タッチターゲットのサイズを大きく
-        document.querySelectorAll('button, .status-control-btn, .tab-button').forEach(el => {
-            el.style.minHeight = '36px';
+        const touchTargets = document.querySelectorAll('button, .status-control-btn, .tab-button, .menu-item');
+        touchTargets.forEach(el => {
+            el.style.minHeight = '48px';
+            el.style.minWidth = '48px';
+            el.style.padding = '12px';
+            el.style.borderRadius = '8px';
+        });
+        
+        // タッチフィードバックの追加
+        touchTargets.forEach(el => {
+            el.addEventListener('touchstart', function(e) {
+                this.classList.add('touch-active');
+            });
+            
+            el.addEventListener('touchend', function(e) {
+                this.classList.remove('touch-active');
+            });
+            
+            el.addEventListener('touchcancel', function(e) {
+                this.classList.remove('touch-active');
+            });
         });
         
         // クリックイベントをタッチイベントに最適化
         this.optimizeTouchEvents();
+        
+        // スクロールの最適化
+        this.optimizeScroll();
     },
     
     // タッチイベントの最適化
@@ -87,15 +109,43 @@ const deviceDetector = {
         // クッキークリックのタッチイベントを改善
         const cookieButton = document.getElementById('big-cookie-btn');
         if (cookieButton) {
-            // タッチイベントにおける反応速度を改善
+            // タッチイベントの最適化
             cookieButton.addEventListener('touchstart', function(e) {
                 this.classList.add('touch-active');
+                // タッチ開始時の反応を即座に
+                e.preventDefault();
             });
             
             cookieButton.addEventListener('touchend', function(e) {
                 this.classList.remove('touch-active');
+                // タッチ終了時の処理を即座に
+                e.preventDefault();
+                this.click();
+            });
+            
+            cookieButton.addEventListener('touchcancel', function(e) {
+                this.classList.remove('touch-active');
             });
         }
+        
+        // その他のタッチ対応要素
+        const touchElements = document.querySelectorAll('.touch-interactive');
+        touchElements.forEach(el => {
+            el.addEventListener('touchstart', function(e) {
+                this.classList.add('touch-active');
+                e.preventDefault();
+            });
+            
+            el.addEventListener('touchend', function(e) {
+                this.classList.remove('touch-active');
+                e.preventDefault();
+                this.click();
+            });
+            
+            el.addEventListener('touchcancel', function(e) {
+                this.classList.remove('touch-active');
+            });
+        });
     },
     
     // ウィンドウサイズ変更時の再最適化
@@ -114,6 +164,30 @@ const deviceDetector = {
             previousDevice.isTablet !== currentDevice.isTablet ||
             previousDevice.isDesktop !== currentDevice.isDesktop) {
             this.optimize();
+            
+            // レイアウトの再調整
+            this.adjustLayout(currentDevice);
+        }
+    }
+    
+    // レイアウトの調整
+    adjustLayout(device) {
+        const mainContainer = document.getElementById('main-container');
+        if (device.isMobile) {
+            // モバイル用のレイアウト調整
+            mainContainer.style.flexDirection = 'column';
+            mainContainer.style.gap = '16px';
+            
+            // タブの表示を調整
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(btn => {
+                btn.style.width = '100%';
+                btn.style.justifyContent = 'center';
+            });
+        } else {
+            // デスクトップ/タブレット用のレイアウト
+            mainContainer.style.flexDirection = 'row';
+            mainContainer.style.gap = '24px';
         }
     }
 };
