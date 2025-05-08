@@ -12,7 +12,10 @@ function saveGame() {
                 purchased: upgrades[key].purchased
             };
             return acc;
-        }, {})
+        }, {}),
+        ingredients: ingredients,
+        // 材料業者データを保存
+        suppliers: typeof saveSupplierData === 'function' ? saveSupplierData() : {}
     };
     localStorage.setItem('cookieClickerSave', JSON.stringify(gameData));
     addStatusMessage('ゲームをセーブしました！', 'success');
@@ -42,6 +45,21 @@ function loadGame() {
                     upgrades[upgradeId].effect(); // 効果を再適用
                 }
             }
+        }
+        
+        // 材料データの復元
+        if (gameData.ingredients) {
+            for (const ingredientId in gameData.ingredients) {
+                if (ingredients[ingredientId]) {
+                    ingredients[ingredientId].amount = gameData.ingredients[ingredientId].amount || 0;
+                    ingredients[ingredientId].unlocked = gameData.ingredients[ingredientId].unlocked || ingredients[ingredientId].unlocked;
+                }
+            }
+        }
+        
+        // 材料業者データの復元
+        if (gameData.suppliers && typeof loadSupplierData === 'function') {
+            loadSupplierData(gameData.suppliers);
         }
         
         cps = calculateTotalCps();

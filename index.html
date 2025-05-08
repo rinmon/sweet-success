@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="css/version.css">
     <link rel="stylesheet" href="css/admin.css">
     <link rel="stylesheet" href="css/burger-menu.css">
+    <link rel="stylesheet" href="css/suppliers.css">
 </head>
 <body>
     <div class="container">
@@ -36,6 +37,7 @@
                     <a href="#" class="mobile-nav-item active" data-tab="units-tab">ユニット</a>
                     <a href="#" class="mobile-nav-item" data-tab="upgrades-tab">アップグレード</a>
                     <a href="#" class="mobile-nav-item" data-tab="recipes-tab">レシピ</a>
+                    <a href="#" class="mobile-nav-item" data-tab="suppliers-tab">材料業者</a>
                     <a href="#" class="mobile-nav-item" data-tab="market-tab">マーケット</a>
                     <a href="#" class="mobile-nav-item" data-tab="stats-tab">統計</a>
                     <a href="#" class="mobile-nav-item" data-tab="orders-tab">注文</a>
@@ -89,6 +91,7 @@
                         <button class="tab-button active" data-tab="units-tab">ユニット</button>
                         <button class="tab-button" data-tab="upgrades-tab">アップグレード</button>
                         <button class="tab-button" data-tab="recipes-tab">レシピ</button>
+                        <button class="tab-button" data-tab="suppliers-tab">材料業者</button>
                         <button class="tab-button" data-tab="market-tab">マーケット</button>
                         <button class="tab-button" data-tab="stats-tab">統計</button>
                         <button class="tab-button" data-tab="orders-tab">注文</button>
@@ -131,6 +134,37 @@
                             <h2>クッキー在庫 <span class="tooltip">作ったクッキーの在庫を管理します</span></h2>
                             <div id="cookie-inventory">
                                 <!-- JavaScriptで在庫がここに表示されます -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 材料業者タブ -->
+                    <div id="suppliers-tab" class="tab-content">
+                        <div id="suppliers-section">
+                            <h2>材料業者 <span class="tooltip">材料を自動生産するための契約を管理します</span></h2>
+                            
+                            <div class="suppliers-nav">
+                                <button class="supplier-tab-btn active" data-supplier-type="flour_suppliers">小麦粉業者</button>
+                                <button class="supplier-tab-btn" data-supplier-type="sugar_suppliers">砂糖業者</button>
+                                <button class="supplier-tab-btn" data-supplier-type="butter_suppliers">バター業者</button>
+                            </div>
+                            
+                            <div id="supplier-content-container">
+                                <!-- 業者リストがここに動的に挿入される -->
+                            </div>
+                            
+                            <div id="active-contracts-section">
+                                <h3>アクティブな契約</h3>
+                                <div id="active-contracts-container">
+                                    <!-- アクティブな契約がここに動的に挿入される -->
+                                </div>
+                            </div>
+                            
+                            <div id="ingredient-orders-section">
+                                <h3>発注状況</h3>
+                                <div id="ingredient-orders-container">
+                                    <!-- 発注がここに動的に挿入される -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -381,6 +415,7 @@
     <script src="js/balance.js"></script>
     <script src="js/version.js"></script>
     <script src="js/admin.js"></script>
+    <script src="js/suppliers.js"></script>
     <script src="js/ui.js"></script>
 </body>
 </html>

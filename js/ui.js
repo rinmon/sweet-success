@@ -168,7 +168,7 @@ const deviceDetector = {
             // レイアウトの再調整
             this.adjustLayout(currentDevice);
         }
-    }
+    },
     
     // レイアウトの調整
     adjustLayout(device) {
