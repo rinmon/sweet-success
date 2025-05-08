@@ -213,8 +213,13 @@ const cookieInventory = {
             
             const stockItemEl = document.createElement('div');
             stockItemEl.className = 'inventory-item';
+            // SVGファイルか絵文字か判断して適切に表示
+            const iconContent = recipe.icon.includes('.svg') 
+                ? `<img src="${recipe.icon}" alt="${recipe.name}" class="cookie-icon" width="24" height="24">` 
+                : recipe.icon || '🍪';
+                
             stockItemEl.innerHTML = `
-                <div class="item-icon">${recipe.icon || '🍪'}</div>
+                <div class="item-icon">${iconContent}</div>
                 <div class="item-details">
                     <div class="item-name">${recipe.name}</div>
                     <div class="item-amount">${amount}個</div>

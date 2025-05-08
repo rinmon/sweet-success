@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- ベースクッキー（ゴールド色） -->
+  <circle cx="50" cy="50" r="45" fill="#e6c86e" stroke="#d4af37" stroke-width="2"/>
+  <!-- クッキーのテクスチャ -->
+  <circle cx="25" cy="30" r="5" fill="#d4af37" opacity="0.5"/>
+  <circle cx="65" cy="25" r="6" fill="#d4af37" opacity="0.5"/>
+  <circle cx="30" cy="70" r="8" fill="#d4af37" opacity="0.5"/>
+  <circle cx="70" cy="60" r="7" fill="#d4af37" opacity="0.5"/>
+  <!-- クラウン -->
+  <path d="M33,30 L50,20 L67,30 L60,45 L40,45 Z" fill="#d4af37" stroke="#c49b33" stroke-width="1"/>
+  <circle cx="33" cy="30" r="3" fill="#d4af37" stroke="#c49b33" stroke-width="1"/>
+  <circle cx="50" cy="20" r="3" fill="#d4af37" stroke="#c49b33" stroke-width="1"/>
+  <circle cx="67" cy="30" r="3" fill="#d4af37" stroke="#c49b33" stroke-width="1"/>
+  <!-- 宝石のような飾り -->
+  <circle cx="33" cy="35" r="2" fill="#e83f5b"/>
+  <circle cx="50" cy="35" r="2" fill="#4a8af4"/>
+  <circle cx="67" cy="35" r="2" fill="#8fb36d"/>
+  <!-- 高級感あるパターン -->
+  <path d="M25,55 Q50,65 75,55" fill="none" stroke="#d4af37" stroke-width="1"/>
+  <path d="M25,65 Q50,75 75,65" fill="none" stroke="#d4af37" stroke-width="1"/>
+</svg>

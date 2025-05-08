@@ -15,7 +15,7 @@ const recipes = {
         baseCookies: 3, // 一度に作れるクッキー数
         cookingTime: 5, // 調理時間（秒）
         unlocked: true, // 最初から解禁済み
-        icon: "🍪"
+        icon: "assets/images/plain_cookie.svg"
     },
     chocolate_chip: {
         id: "chocolate_chip",
@@ -32,7 +32,7 @@ const recipes = {
         cookingTime: 8,
         unlocked: false,
         unlockAt: 50, // 50クッキー生産で解禁
-        icon: "🍪"
+        icon: "assets/images/chocolate_chip.svg"
     },
     almond_cookie: {
         id: "almond_cookie",
@@ -49,7 +49,7 @@ const recipes = {
         cookingTime: 10,
         unlocked: false,
         unlockAt: 200,
-        icon: "🍪"
+        icon: "assets/images/almond_cookie.svg"
     },
     coconut_cookie: {
         id: "coconut_cookie",
@@ -66,7 +66,7 @@ const recipes = {
         cookingTime: 12,
         unlocked: false,
         unlockAt: 500,
-        icon: "🍪"
+        icon: "assets/images/coconut_cookie.svg"
     },
     matcha_cookie: {
         id: "matcha_cookie",
@@ -88,7 +88,7 @@ const recipes = {
             multiplier: 1.1,
             duration: 60 // 1分間
         },
-        icon: "🍪"
+        icon: "assets/images/matcha_cookie.svg"
     },
     strawberry_cookie: {
         id: "strawberry_cookie",
@@ -110,7 +110,7 @@ const recipes = {
             multiplier: 1.2,
             duration: 90 // 1分30秒
         },
-        icon: "🍪"
+        icon: "assets/images/strawberry_cookie.svg"
     },
     double_chocolate: {
         id: "double_chocolate",
@@ -132,7 +132,7 @@ const recipes = {
             multiplier: 1.15,
             duration: 120 // 2分間
         },
-        icon: "🍪"
+        icon: "assets/images/double_chocolate.svg"
     },
     royal_cookie: {
         id: "royal_cookie",
@@ -158,7 +158,7 @@ const recipes = {
             multiplier: 1.5,
             duration: 300 // 5分間
         },
-        icon: "👑"
+        icon: "assets/images/royal_cookie.svg"
     }
 };
 
@@ -533,7 +533,11 @@ function updateRecipeDisplay() {
             // レシピカードを生成
             html += `
                 <div class="recipe-card" data-id="${recipe.id}">
-                    <div class="recipe-icon">${recipe.icon}</div>
+                    <div class="recipe-icon">
+                        ${recipe.icon.includes('.svg') 
+                        ? `<img src="${recipe.icon}" alt="${recipe.name}" class="cookie-icon" width="40" height="40">` 
+                        : recipe.icon}
+                    </div>
                     <div class="recipe-info">
                         <h3>${recipe.name}</h3>
                         <p>${recipe.description}</p>

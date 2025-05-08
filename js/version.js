@@ -7,6 +7,24 @@
  * - パッチ: バグ修正
  */
 
+// ページ読み込み時にバージョン表示を更新する
+document.addEventListener('DOMContentLoaded', function() {
+    updateVersionDisplay();
+});
+
+// バージョン表示を更新する関数
+function updateVersionDisplay() {
+    const versionElement = document.getElementById('game-version');
+    if (versionElement) {
+        versionElement.textContent = gameVersion.toString();
+        
+        // クリックで変更履歴を表示
+        versionElement.addEventListener('click', function() {
+            gameVersion.showChangelog();
+        });
+    }
+}
+
 const gameVersion = {
     major: 1,
     minor: 4,
@@ -21,6 +39,21 @@ const gameVersion = {
     // 完全なバージョン情報を取得
     getFullVersion: function() {
         return `${this.toString()} (${this.date})`;
+    },
+    
+    // バージョン履歴表示
+    showChangelog: function() {
+        let message = '更新履歴\n\n';
+        this.changelog.forEach(entry => {
+            message += `${entry.version} (${entry.date})\n`;
+            entry.changes.forEach(change => {
+                message += `- ${change}\n`;
+            });
+            message += '\n';
+        });
+        
+        // モーダル表示または通知として表示
+        alert(message);
     },
     
     // 変更履歴

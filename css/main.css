@@ -86,6 +86,7 @@ main {
     overflow: hidden;
     min-height: 0;
     touch-action: pan-y;
+    flex-direction: row; /* 幅広画面では横幅レイアウト */
 }
 
 #game-area {
@@ -129,6 +130,7 @@ main {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    min-width: 450px; /* この幅を維持してコンテンツが表示されるように */
 }
 
 #store-area h2 {
@@ -439,8 +441,7 @@ footer button:hover {
     #game-area {
         min-width: 280px;
     }
-}
-
+    
     main {
         flex-direction: column;
         gap: 10px;
@@ -450,7 +451,10 @@ footer button:hover {
         flex: none;
         width: 100%;
     }
-    
+}
+
+/* スマホ向け追加スタイル */
+@media screen and (max-width: 768px) {
     #game-area {
         margin-bottom: 10px;
     }
