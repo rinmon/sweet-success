@@ -211,7 +211,7 @@ function signSupplierContract(supplierType, supplierId, contractType) {
     updateCookieDisplay();
     
     // 変更をセーブ
-    saveGameData();
+    saveGame();
     return true;
 }
 
@@ -259,7 +259,7 @@ function processSupplierContracts() {
     
     if (contractsToRemove.length > 0) {
         updateSupplierDisplay();
-        saveGameData();
+        saveGame();
     }
 }
 
@@ -294,6 +294,9 @@ function createIngredientOrder(ingredientType, supplierId) {
     
     addStatusMessage(`${supplier.name}から${translateIngredientType(ingredientType)}の発注を${orderAmount}個行いました。`, 'info');
     updateSupplierDisplay();
+    
+    // 変更をセーブ
+    saveGame();
 }
 
 // 材料の生産処理
@@ -344,6 +347,9 @@ function processIngredientProduction() {
         updateIngredientDisplay();
         updateSupplierDisplay();
     });
+    
+    // 変更を保存
+    saveGame();
 }
 
 // 業者データを取得

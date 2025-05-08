@@ -99,6 +99,34 @@ const adminPanel = {
                     </div>
                     
                     <div class="admin-section">
+                        <h3>注文システム設定</h3>
+                        <div class="admin-input-group">
+                            <label for="base-time-limit">基本注文制限時間(秒)</label>
+                            <input type="number" id="base-time-limit" min="30" step="10" value="120">
+                        </div>
+                        <div class="admin-input-group">
+                            <label for="time-limit-variance">時間制限バリエーション(秒)</label>
+                            <input type="number" id="time-limit-variance" min="0" step="5" value="45">
+                        </div>
+                        <div class="admin-input-group">
+                            <label for="max-active-orders">最大同時注文数</label>
+                            <input type="number" id="max-active-orders" min="1" max="10" value="3">
+                        </div>
+                        <div class="admin-input-group">
+                            <label for="next-order-delay">次の注文生成間隔(秒)</label>
+                            <input type="number" id="next-order-delay" min="10" step="5" value="30">
+                        </div>
+                        <div class="admin-input-group">
+                            <label for="order-reward-multiplier">注文報酬倍率</label>
+                            <input type="number" id="order-reward-multiplier" min="0.5" step="0.1" value="1.5">
+                        </div>
+                        <div class="admin-group">
+                            <button id="reset-orders-admin" class="admin-button">全ての注文リセット</button>
+                            <button id="generate-order-admin" class="admin-button">注文生成</button>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-section">
                         <h3>マイルストーン設定</h3>
                         <div id="milestone-settings">
                             <!-- マイルストーン設定は動的に生成 -->
@@ -143,7 +171,7 @@ const adminPanel = {
         
         // ゲーム保存
         document.getElementById('save-game-admin').addEventListener('click', () => {
-            saveGameData();
+            saveGame();
             this.showStatus('ゲームを保存しました', 'success');
         });
         

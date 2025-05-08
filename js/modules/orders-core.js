@@ -1,7 +1,9 @@
-// orders.js - クッキー注文システム
+/**
+ * orders-core.js - 注文システムのコア機能
+ * 注文の生成、管理、保存などの基本機能を提供
+ */
 
-// 注文システム管理オブジェクト
-const orderSystem = {
+const ordersCore = {
     // アクティブな注文リスト
     activeOrders: [],
     
@@ -20,7 +22,7 @@ const orderSystem = {
         maxItems: 3,           // 最大注文アイテム種類数
         minQuantity: 1,        // 最小注文数量
         maxQuantity: 5,        // 最大注文数量
-        baseTimeLimit: 120,    // 基本制限時間(秒) - 製造間に合うよう延長
+        baseTimeLimit: 120,    // 基本制限時間(秒) - 製造が間に合うよう延長
         timeLimitVariance: 45, // 制限時間のばらつき(秒) - バリエーションも増加
         baseRewardMultiplier: 1.5, // 基本報酬倍率
     },
@@ -34,13 +36,9 @@ const orderSystem = {
     // 注文生成タイマー
     orderTimer: null,
     
-    // クッキー在庫変更監視フラグ
-    _cookieChangeHandlerSet: false,
-    
     // 初期化
     init: function() {
         this.loadData();
-        this.setupEventListeners();
         
         // 最初の注文生成を開始
         this.startOrderGeneration();
@@ -197,12 +195,14 @@ const orderSystem = {
         // アクティブ注文リストに追加
         this.activeOrders.push(order);
         
-        // UIに注文を表示
-        this.renderOrders();
-        
         // 注文受付の通知（注文画面へのリンク付き）
         const specialText = order.special ? '【特別注文】' : '';
         addStatusMessage(`${specialText}${order.customerName}から<a href="javascript:void(0)" class="goto-orders">新しい注文</a>が入りました！`, 'info', true);
+        
+        // イベント発火
+        if (typeof ordersEvents !== 'undefined' && ordersEvents.onOrderCreated) {
+            ordersEvents.onOrderCreated(order);
+        }
         
         // BGM音を再生（特別注文の場合は特別な音）
         if (order.special) {
@@ -250,13 +250,13 @@ const orderSystem = {
         
         if (action === 'complete') {
             // 注文に必要なクッキーがあるかチェック
-            if (!this.checkCookieInventory(order.items)) {
+            if (!ordersInventory.checkCookieInventory(order.items)) {
                 addStatusMessage("注文に必要なクッキーがありません！", "error", true);
                 return false;
             }
             
             // クッキーを消費
-            this.consumeCookies(order.items);
+            ordersInventory.consumeCookies(order.items);
             
             // 報酬を加算
             cookieCount += order.reward;
@@ -276,8 +276,20 @@ const orderSystem = {
             addStatusMessage(`${specialText}${order.customerName}の注文が完了しました！報酬${formatNumber(order.reward)}クッキーを獲得！`, "success", true);
             
             // アニメーション再生
-            this.playPackagingAnimation(order);
-        }
+            if (typeof ordersUI !== 'undefined' && ordersUI.playPackagingAnimation) {
+                ordersUI.playPackagingAnimation(order);
+            }
+            
+            // 経験値を追加
+            if (typeof player !== 'undefined' && player.addExperience) {
+                // 報酬の10%を経験値として加算
+                const expGain = Math.ceil(order.reward / 10);
+                player.addExperience(expGain);
+            }
+            
+            // 完了音を再生
+            playSound('orderComplete');
+        } 
         else if (action === 'reject') {
             // 拒否統計を更新
             this.stats.rejected++;
@@ -292,68 +304,19 @@ const orderSystem = {
         // 注文リストから削除
         this.activeOrders.splice(orderIndex, 1);
         
-        // データを保存
-        this.saveData();
-        
-        // 注文ボタンの状態を更新
-        this.updateOrderButtons();
-        
-        // 注文表示を更新
-        this.renderOrders();
-        
-        return true;
-    }
-        
-        // 注文リストから削除
-        this.activeOrders.splice(orderIndex, 1);
+        // イベント発火
+        if (typeof ordersEvents !== 'undefined') {
+            if (action === 'complete' && ordersEvents.onOrderCompleted) {
+                ordersEvents.onOrderCompleted(order);
+            } else if (action === 'reject' && ordersEvents.onOrderRejected) {
+                ordersEvents.onOrderRejected(order);
+            }
+        }
         
         // データを保存
         this.saveData();
         
         return true;
-    },
-    
-    // 注文に必要なクッキーが在庫にあるかチェック
-    checkCookieInventory: function(orderItems) {
-        if (!inventory || !inventory.cookies) {
-            return false;
-        }
-        
-        for (const [recipeId, quantity] of Object.entries(orderItems)) {
-            const cookieInStock = inventory.cookies.find(item => item.id === recipeId);
-            if (!cookieInStock || cookieInStock.amount < quantity) {
-                return false;
-            }
-        }
-        
-        return true;
-    },
-    
-    // 注文完了ボタンの状態を更新（在庫があれば有効化）
-    updateOrderButtons: function() {
-        this.activeOrders.forEach(order => {
-            const completeBtn = document.querySelector(`.complete-order[data-order-id="${order.id}"]`);
-            if (completeBtn) {
-                const canComplete = this.checkCookieInventory(order.items);
-                completeBtn.disabled = !canComplete;
-                completeBtn.classList.toggle('btn-ready', canComplete);
-                
-                // 在庫が揃った時に視覚的フィードバックを提供
-                if (canComplete && completeBtn.disabled) {
-                    completeBtn.disabled = false;
-                    completeBtn.classList.add('btn-ready-animation');
-                    setTimeout(() => {
-                        completeBtn.classList.remove('btn-ready-animation');
-                    }, 1000);
-                }
-            }
-        });
-    },
-    
-    // 注文に必要なクッキーを消費
-    consumeCookies: function(orderItems) {
-        // 実際のインベントリシステムと連携する予定
-        // 現時点では何もしない
     },
     
     // ベストセラーレシピの更新
@@ -385,115 +348,48 @@ const orderSystem = {
             for (const [recipeId, quantity] of Object.entries(order.items)) {
                 // レシピごとに売上を記録
                 const recipeRevenue = Math.floor(order.reward * (quantity / Object.values(order.items).reduce((a, b) => a + b, 0)));
-    
-    // 在庫の変更を監視し、注文完了ボタンの状態を更新
-    if (inventory && inventory.onCookieChange) {
-        if (!this._cookieChangeHandlerSet) {
-            inventory.onCookieChange(() => this.updateOrderButtons());
-            this._cookieChangeHandlerSet = true;
-        }
-    }
-    
-    // アクティブな注文を表示
-    this.activeOrders.forEach(order => {
-        // 残り時間を計算
-        const now = Date.now();
-        const remainingTime = Math.max(0, (order.endTime - now) / 1000);
-        const minutes = Math.floor(remainingTime / 60);
-        const seconds = Math.floor(remainingTime % 60);
-        const timeDisplay = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-        
-        // 残り時間が少ない場合の警告クラス
-        let timeClass = '';
-        if (remainingTime < 15) {
-            timeClass = 'critical-time';
-        } else if (remainingTime < 30) {
-            timeClass = 'warning-time';
-        }
-        
-        // 注文アイテムのHTML生成
-        let itemsHTML = '';
-        // 注文アイテムのHTML生成
-        for (const [recipeId, quantity] of Object.entries(order.items)) {
-            const recipe = recipes[recipeId];
-            
-            if (recipe) {
-                itemsHTML += `
-                    <div class="order-item">
-                        <span class="order-item-icon">${recipe.icon || '🍪'}</span>
-                        <span class="order-item-name">${recipe.name}</span>
-                        <span class="order-item-quantity">×${quantity}</span>
-                    </div>
-                `;
+                cookieStats.recordSale(recipeId, quantity, recipeRevenue);
             }
         }
+    },
+    
+    // 注文の有効期限をチェックして期限切れを処理
+    checkOrderTimeouts: function() {
+        const now = Date.now();
+        const expiredOrders = this.activeOrders.filter(order => order.endTime < now);
         
-        // 注文カードのHTML生成
-        const orderHTML = `
-            <div class="order-card ${specialClass}" data-order-id="${order.id}">
-                <div class="order-header">
-                    <div class="customer-name">${order.customerName}</div>
-                    <div class="order-time ${timeClass}">${timeDisplay}</div>
-                </div>
-                <div class="order-items">
-                    ${itemsHTML}
-                </div>
-                <div class="order-footer">
-                    <div class="order-reward">${formatNumber(order.reward)} クッキー</div>
-                    <div class="order-actions">
-                        <button class="complete-order ${buttonClass}" data-order-id="${order.id}" ${buttonDisabled}>完了</button>
-                        <button class="reject-order" data-order-id="${order.id}">キャンセル</button>
-                    </div>
-                </div>
-            </div>
-        `;
+        // 期限切れの注文を処理
+        expiredOrders.forEach(order => {
+            // 拒否扱いにする
+            this.stats.rejected++;
             
-            // コンテナに注文を追加
-            container.innerHTML += orderHTML;
+            // 期限切れメッセージ
+            addStatusMessage(`${order.customerName}の注文が期限切れになりました！`, "error", true);
+            
+            // 期限切れ音を再生
+            playSound('orderTimeout');
+            
+            // アクティブ注文リストから削除
+            const index = this.activeOrders.findIndex(o => o.id === order.id);
+            if (index !== -1) {
+                this.activeOrders.splice(index, 1);
+            }
+            
+            // イベント発火
+            if (typeof ordersEvents !== 'undefined' && ordersEvents.onOrderExpired) {
+                ordersEvents.onOrderExpired(order);
+            }
         });
         
-        // 注文に対するイベントリスナーを設定
-        this.setupOrderListeners();
-    },
-    
-    // 注文UI要素のイベントリスナーを設定
-    setupOrderListeners: function() {
-        // 完了ボタン
-        const completeButtons = document.querySelectorAll('.complete-order');
-        completeButtons.forEach(button => {
-            button.addEventListener('click', event => {
-                const orderId = parseInt(event.target.getAttribute('data-order-id'));
-                this.processOrder(orderId, 'complete');
-            });
-        });
-        
-        // キャンセルボタン
-        const rejectButtons = document.querySelectorAll('.reject-order');
-        rejectButtons.forEach(button => {
-            button.addEventListener('click', event => {
-                const orderId = parseInt(event.target.getAttribute('data-order-id'));
-                this.processOrder(orderId, 'reject');
-            });
-        });
-    },
-    
-    // 初期イベントリスナーを設定
-    setupEventListeners: function() {
-        // 注文の有効期限をチェックする定期タイマー
-        setInterval(() => {
-            this.checkOrderTimeouts();
-        }, 1000);
-        
-        // ステータスメッセージエリアでの注文タブリンククリックを処理
-        const statusArea = document.getElementById('status-message-area');
-        if (statusArea) {
-            statusArea.addEventListener('click', (e) => {
-                if (e.target.classList.contains('goto-orders') || 
-                    e.target.parentElement.classList.contains('goto-orders')) {
-                    e.preventDefault();
-                    ui.switchTab('orders');
-                }
-            });
+        // 期限切れの注文があれば再描画
+        if (expiredOrders.length > 0) {
+            // データを保存
+            this.saveData();
+            
+            // イベント発火
+            if (typeof ordersEvents !== 'undefined' && ordersEvents.onOrdersChanged) {
+                ordersEvents.onOrdersChanged();
+            }
         }
     },
     
@@ -526,24 +422,3 @@ const orderSystem = {
         }
     }
 };
-
-// 音声効果の再生
-function playSound(soundId) {
-    // 音声システムは後で実装するための準備
-    // 現時点では何もしない
-}
-
-// ゲームロード時に注文システムを初期化
-window.addEventListener('DOMContentLoaded', function() {
-    // 遅延初期化（他のシステムがロードされた後に実行）
-    setTimeout(() => {
-        if (typeof orderSystem !== 'undefined') {
-            orderSystem.init();
-            
-            // インベントリシステムがロードされたら在庫状態を監視して注文ボタンを更新
-            if (typeof inventory !== 'undefined' && inventory.onCookieChange) {
-                inventory.onCookieChange(() => orderSystem.updateOrderButtons());
-            }
-        }
-    }, 1000);
-});

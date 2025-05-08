@@ -277,48 +277,7 @@ const orderSystem = {
             
             // アニメーション再生
             this.playPackagingAnimation(order);
-        }
-        else if (action === 'reject') {
-            // 拒否統計を更新
-            this.stats.rejected++;
             
-            // 拒否メッセージ
-            addStatusMessage(`${order.customerName}の注文をキャンセルしました。`, "info", true);
-            
-            // キャンセル音を再生
-            playSound('orderCancel');
-        }
-        
-        // 注文リストから削除
-        this.activeOrders.splice(orderIndex, 1);
-        
-        // データを保存
-        this.saveData();
-        
-        // 注文ボタンの状態を更新
-        this.updateOrderButtons();
-        
-        // 注文表示を更新
-        this.renderOrders();
-        
-        return true;
-    }
-        
-        // 注文リストから削除
-        this.activeOrders.splice(orderIndex, 1);
-        
-        // データを保存
-        this.saveData();
-        
-        return true;
-    },
-    
-    // 注文に必要なクッキーが在庫にあるかチェック
-    checkCookieInventory: function(orderItems) {
-        if (!inventory || !inventory.cookies) {
-            return false;
-        }
-        
         for (const [recipeId, quantity] of Object.entries(orderItems)) {
             const cookieInStock = inventory.cookies.find(item => item.id === recipeId);
             if (!cookieInStock || cookieInStock.amount < quantity) {
@@ -413,7 +372,6 @@ const orderSystem = {
         
         // 注文アイテムのHTML生成
         let itemsHTML = '';
-        // 注文アイテムのHTML生成
         for (const [recipeId, quantity] of Object.entries(order.items)) {
             const recipe = recipes[recipeId];
             
@@ -423,30 +381,24 @@ const orderSystem = {
                         <span class="order-item-icon">${recipe.icon || '🍪'}</span>
                         <span class="order-item-name">${recipe.name}</span>
                         <span class="order-item-quantity">×${quantity}</span>
+            const orderHTML = `
+                <div class="order-card ${specialClass}" data-order-id="${order.id}">
+                    <div class="order-header">
+                        <div class="customer-name">${order.customerName}</div>
+                        <div class="order-time ${timeClass}">${timeDisplay}</div>
                     </div>
-                `;
-            }
-        }
-        
-        // 注文カードのHTML生成
-        const orderHTML = `
-            <div class="order-card ${specialClass}" data-order-id="${order.id}">
-                <div class="order-header">
-                    <div class="customer-name">${order.customerName}</div>
-                    <div class="order-time ${timeClass}">${timeDisplay}</div>
-                </div>
-                <div class="order-items">
-                    ${itemsHTML}
-                </div>
-                <div class="order-footer">
-                    <div class="order-reward">${formatNumber(order.reward)} クッキー</div>
-                    <div class="order-actions">
-                        <button class="complete-order ${buttonClass}" data-order-id="${order.id}" ${buttonDisabled}>完了</button>
-                        <button class="reject-order" data-order-id="${order.id}">キャンセル</button>
+                    <div class="order-items">
+                        ${itemsHTML}
+                    </div>
+                    <div class="order-footer">
+                        <div class="order-reward">${formatNumber(order.reward)} クッキー</div>
+                        <div class="order-actions">
+                            <button class="complete-order ${buttonClass}" data-order-id="${order.id}" ${buttonDisabled}>完了</button>
+                            <button class="reject-order" data-order-id="${order.id}">キャンセル</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        `;
+            `;
             
             // コンテナに注文を追加
             container.innerHTML += orderHTML;

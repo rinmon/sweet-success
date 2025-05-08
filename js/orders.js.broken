@@ -295,21 +295,6 @@ const orderSystem = {
         // データを保存
         this.saveData();
         
-        // 注文ボタンの状態を更新
-        this.updateOrderButtons();
-        
-        // 注文表示を更新
-        this.renderOrders();
-        
-        return true;
-    }
-        
-        // 注文リストから削除
-        this.activeOrders.splice(orderIndex, 1);
-        
-        // データを保存
-        this.saveData();
-        
         return true;
     },
     

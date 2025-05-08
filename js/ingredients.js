@@ -159,7 +159,7 @@ window.buyIngredient = function(ingredientId, amount = 1) {
     updateRecipeDisplay(); // 材料取得後にレシピ表示も更新
     
     // 変更をセーブ
-    saveGameData();
+    saveGame();
     return true;
 }
 
@@ -184,7 +184,7 @@ function unlockIngredient(ingredientId) {
     updateCookieDisplay();
     
     // 変更をセーブ
-    saveGameData();
+    saveGame();
     return true;
 }
 
