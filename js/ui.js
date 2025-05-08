@@ -211,6 +211,14 @@ function setupTabSystem() {
             // 選択したタブをアクティブに
             button.classList.add('active');
             document.getElementById(tabId).classList.add('active');
+            
+            // タブ切り替え時の特定処理
+            if (tabId === 'recipes-tab') {
+                // レシピタブに切り替えた場合、材料購入ボタンのイベント処理を再設定
+                if (typeof setupIngredientsDelegation === 'function') {
+                    setupIngredientsDelegation();
+                }
+            }
         });
     });
 }

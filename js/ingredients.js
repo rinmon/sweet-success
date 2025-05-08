@@ -206,7 +206,7 @@ function updateIngredientDisplay() {
                         <p>${ingredient.description}</p>
                         <p>所持: <span class="ingredient-amount">${ingredient.amount}</span>個</p>
                     </div>
-                    <button class="buy-ingredient-btn" data-id="${ingredient.id}">
+                    <button class="buy-ingredient-btn" data-id="${ingredient.id}" onclick="window.buyIngredient('${ingredient.id}'); return false;">
                         購入 (${ingredient.basePrice} クッキー)
                     </button>
                 </div>
@@ -220,7 +220,7 @@ function updateIngredientDisplay() {
                         <h3>未知の材料</h3>
                         <p>解禁するには ${ingredient.unlockPrice} クッキーが必要です。</p>
                     </div>
-                    <button class="unlock-ingredient-btn" data-id="${ingredient.id}">
+                    <button class="unlock-ingredient-btn" data-id="${ingredient.id}" onclick="window.unlockIngredient('${ingredient.id}'); return false;">
                         解禁する (${ingredient.unlockPrice} クッキー)
                     </button>
                 </div>
@@ -230,31 +230,43 @@ function updateIngredientDisplay() {
     
     container.innerHTML = html;
     
-    // 購入ボタンにイベントリスナーを直接追加
-    addIngredientEventListeners();
+    // 材料タブにクリックイベント委譲を設定
+    setupIngredientsDelegation();
 }
 
-// 材料関連のイベントリスナーを追加する関数
-function addIngredientEventListeners() {
-    // 購入ボタンのイベントリスナー
-    const buyButtons = document.querySelectorAll('.buy-ingredient-btn');
-    buyButtons.forEach(button => {
-        const ingredientId = button.getAttribute('data-id');
-        // 既存のリスナーを削除して再設定
-        button.removeEventListener('click', button.buyHandler);
-        button.buyHandler = () => buyIngredient(ingredientId);
-        button.addEventListener('click', button.buyHandler);
-    });
+// 材料タブにイベント委譲パターンを設定する関数
+function setupIngredientsDelegation() {
+    const ingredientsContainer = document.getElementById('ingredients-container');
+    if (!ingredientsContainer) return;
     
-    // 解禁ボタンのイベントリスナー
-    const unlockButtons = document.querySelectorAll('.unlock-ingredient-btn');
-    unlockButtons.forEach(button => {
-        const ingredientId = button.getAttribute('data-id');
-        // 既存のリスナーを削除して再設定
-        button.removeEventListener('click', button.unlockHandler);
-        button.unlockHandler = () => unlockIngredient(ingredientId);
-        button.addEventListener('click', button.unlockHandler);
-    });
+    // 先に古いイベントリスナーを削除
+    ingredientsContainer.removeEventListener('click', handleIngredientsContainerClick);
+    
+    // 新しいイベントリスナーを追加
+    ingredientsContainer.addEventListener('click', handleIngredientsContainerClick);
+}
+
+// 材料コンテナ内のクリックを処理する関数
+function handleIngredientsContainerClick(event) {
+    // 購入ボタンがクリックされた場合
+    if (event.target.classList.contains('buy-ingredient-btn')) {
+        const ingredientId = event.target.getAttribute('data-id');
+        if (ingredientId) {
+            buyIngredient(ingredientId);
+            event.preventDefault();
+            return false;
+        }
+    }
+    
+    // 解禁ボタンがクリックされた場合
+    if (event.target.classList.contains('unlock-ingredient-btn')) {
+        const ingredientId = event.target.getAttribute('data-id');
+        if (ingredientId) {
+            unlockIngredient(ingredientId);
+            event.preventDefault();
+            return false;
+        }
+    }
 }
 
 // 材料の確認
